@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi07.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi08.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi09.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi10.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi11.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi12.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi13.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi14.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi15.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi16.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi17.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi18.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi19.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi20.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpapi21.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpavl.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpbfd.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpbfx.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpcpx.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpdmp.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpdmx.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv07.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpenv08.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpfhv.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpgmp.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glphbm.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpini01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpini02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios07.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios08.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios09.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios10.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios11.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpios12.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpipm.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplib01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplib02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplib03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplpf.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplpx01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplpx02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplpx03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpluf.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glplux.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmat.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmpl06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpmps.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet07.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet08.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnet09.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp03.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp04.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp05.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpnpp06.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpqmd.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glprgr.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glprlx.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glprng01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glprng02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpscf.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpscl.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpsdf.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpspm.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpspx01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpspx02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpsql.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpssx01.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glpssx02.c" />
+    <ClCompile Include="..\..\..\..\dep\glpk\glptsp.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\dep\glpk\glpapi.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpavl.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpbfd.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpbfx.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpdmp.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpenv.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpfhv.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpgmp.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glphbm.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpios.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpipm.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpk.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glplib.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glplpf.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glplpx.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpluf.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glplux.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpmat.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpmpl.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpnet.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpnpp.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpqmd.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glprgr.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glprlx.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glprng.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpscf.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpsdf.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpspm.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpspx.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpsql.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpssx.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glpstd.h" />
+    <ClInclude Include="..\..\..\..\dep\glpk\glptsp.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{46840A8F-6002-4F0E-AF8E-D5B9C3FA9393}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>glpk</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>C:\VS10_BUILD\$(SolutionName)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)$(ProjectName)\</IntDir>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
