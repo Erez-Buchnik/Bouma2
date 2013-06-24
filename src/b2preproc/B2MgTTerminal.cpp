@@ -25,51 +25,29 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2PreprocDefs___HPP
-#define B2PreprocDefs___HPP
+
+#include "B2MgTTerminal.hpp"
+#include <sstream>
 
 
-#include <string>
-#include <vector>
-
-#ifdef __GNUC__
-
-#include <backward/hash_map>
-#define B2HashMap /**/ __gnu_cxx::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (hash_map_inst).erase(iter++); };
-
-namespace __gnu_cxx
+std::string B2MgTTerminal::dump() const
 {
-	template<> struct hash<std::string>
+	int offset = 0;
+	std::stringstream str_strm;
+	str_strm << '[' << _str_id << '|' << _relative_offset << ']' << _id << ':';
+	std::string str_out = "";
+	for(const_iterator segment_it = begin(); segment_it != end(); ++segment_it)
 	{
-		unsigned int fnv_hash(const char *bytes, unsigned int len) const
+		if(segment_it->first < offset)
 		{
-			unsigned int hashval = 2166136261U;
-			for(unsigned int i = 0; i < len; ++i)
-			{
-				hashval = (16777619U * hashval) ^ (unsigned char)(bytes[i]);
-			};
-			return hashval;
-		};
-
-		size_t operator () (const std::string &str) const
+			str_out = segment_it->second + std::string((offset - (segment_it->first + segment_it->second.size())), ' ') + str_out;
+			offset = segment_it->first;
+		}
+		else
 		{
-			return fnv_hash(str.c_str(), str.size());
+			str_out += std::string((segment_it->first - (offset + str_out.size())), ' ') + segment_it->second;
 		};
 	};
+	str_strm << str_out;
+	return str_strm.str();
 };
-
-#else
-
-#include <hash_map>
-#define B2HashMap /**/ std::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
-
-#endif
-
-#define B2_MGT_STATE_INVALID_ID (0xFFFF)
-#define B2_MGT_INVALID_OFFSET (1)
-
-#include "B2PreprocConfig.hpp"
-
-#endif // B2PreprocDefs___HPP

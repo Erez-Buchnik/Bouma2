@@ -25,51 +25,28 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2PreprocDefs___HPP
-#define B2PreprocDefs___HPP
+#ifndef B2MgTStrPurgeMap___HPP
+#define B2MgTStrPurgeMap___HPP
+
+#include "B2PreprocDefs.hpp"
 
 
-#include <string>
-#include <vector>
-
-#ifdef __GNUC__
-
-#include <backward/hash_map>
-#define B2HashMap /**/ __gnu_cxx::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (hash_map_inst).erase(iter++); };
-
-namespace __gnu_cxx
+class B2MgTStrPurgeMap : public B2HashMap<unsigned int, unsigned int>
 {
-	template<> struct hash<std::string>
-	{
-		unsigned int fnv_hash(const char *bytes, unsigned int len) const
-		{
-			unsigned int hashval = 2166136261U;
-			for(unsigned int i = 0; i < len; ++i)
-			{
-				hashval = (16777619U * hashval) ^ (unsigned char)(bytes[i]);
-			};
-			return hashval;
-		};
 
-		size_t operator () (const std::string &str) const
+public:
+	B2MgTStrPurgeMap() { };
+	B2MgTStrPurgeMap(unsigned int total_str_count)
+	{
+		for(unsigned int str_instance_id = 0; str_instance_id < total_str_count; ++str_instance_id)
 		{
-			return fnv_hash(str.c_str(), str.size());
+			(*this)[str_instance_id];
 		};
 	};
+	void merge(const B2MgTStrPurgeMap &other_purge_map);
+	void deduct(const B2MgTStrPurgeMap &other_purge_map);
 };
 
-#else
 
-#include <hash_map>
-#define B2HashMap /**/ std::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
+#endif //B2MgTStrPurgeMap___HPP
 
-#endif
-
-#define B2_MGT_STATE_INVALID_ID (0xFFFF)
-#define B2_MGT_INVALID_OFFSET (1)
-
-#include "B2PreprocConfig.hpp"
-
-#endif // B2PreprocDefs___HPP

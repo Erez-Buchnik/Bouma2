@@ -30,7 +30,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include <stdio.h>
 #include <string.h>
 
-void b2_test(char *strings_file_path)
+void b2_test(const char *strings_file_path)
 {
 	B2StrSet str_set;
 	FILE *f_strs = fopen(strings_file_path, "r");
@@ -49,23 +49,52 @@ void b2_test(char *strings_file_path)
 	const B2MotifSet &motif_set = hasher.motif_set();
 	/////////////////////////////////////////
 	printf("motif count:%ld\n", motif_set.size());
+	unsigned int mgt_total_state_count = 0;
+	unsigned int mgt_total_terminal_count = 0;
 	for(B2MotifSet::const_iterator motif_it = motif_set.begin(); motif_it != motif_set.end(); ++motif_it)
 	{
 		const std::vector<B2TraceStruct> &trace_vec = motif_it->second;
-		const B2MangledTrie &mangled_trie(trace_vec);
+		unsigned int mgt_state_count = 0;
+		unsigned int mgt_terminal_count = 0;
+		if(trace_vec.size() > 1)
+		{
+			B2MangledTrie mangled_trie(str_set, trace_vec);
+			int purge_offset = mangled_trie.select_purge_offset();
+			mangled_trie.purge(purge_offset);
+			mgt_state_count = mangled_trie.state_machine().size();
+			mgt_terminal_count = mangled_trie.state_machine().terminals().size();
+			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
+		}
+		else
+		{
+			B2MangledTrie mangled_trie(str_set, *trace_vec.begin());
+			mgt_state_count = 0;
+			mgt_terminal_count = 1;
+			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
+		};
 		const B2TraceStruct &trace_struct = *(trace_vec.begin());
-		printf("%s:%02X[%02ld]", trace_struct.chars().c_str(), motif_it->first, trace_vec.size());
+		printf("%s:<%02d,%02d>%02X[%02ld]", trace_struct.chars().c_str(), mgt_state_count, mgt_terminal_count, motif_it->first, trace_vec.size());
 		for(std::vector<B2TraceStruct>::const_iterator trace_it = trace_vec.begin(); trace_it != trace_vec.end(); ++trace_it)
 		{
 			printf("(%d)%s ", trace_it->offset(), trace_it->str().c_str());
 		};
 		printf("\n");
+		mgt_total_state_count += mgt_state_count;
+		mgt_total_terminal_count += mgt_terminal_count;
 	};
+	printf("TOTALS:<%02d,%02d>\n", mgt_total_state_count, mgt_total_terminal_count);
 	/////////////////////////////////////////
 };
 
+#include "B2PreprocConfig.hpp"
+B2PreprocConfig *preproc_config = NULL;
+
+const std::string b2_preproc_config(B2PreprocConfigTxtId id) { return preproc_config->txt(id); };
+const double b2_preproc_config(B2PreprocConfigNumId id) { return preproc_config->num(id); };
+
 int main(int argc, char *argv[])
 {
-	b2_test(argv[1]);
+	preproc_config = new B2PreprocConfig(argc, (const char **)argv);
+	b2_test(preproc_config->txt(B2_STR_SET_FILE).c_str());
 	exit(0);
 };

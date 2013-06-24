@@ -27,6 +27,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 #include "B2GlpkHasher.hpp"
 
+#define FFFFF B2_GLPK_DEBUG_FILE
 
 B2GlpkHasher::B2GlpkHasher(const B2TraceCoeffs &trace_coeffs, const B2StrSet &str_set) : B2HasherBase(str_set)
 {
@@ -36,7 +37,7 @@ B2GlpkHasher::B2GlpkHasher(const B2TraceCoeffs &trace_coeffs, const B2StrSet &st
 	add_trace_vars(trace_coeffs);
 	add_str_constraints();
 #ifdef B2_GLPK_DEBUG
-	glp_write_prob(_lp, 0, "..\\..\\..\\res\\B2-ILP.glpk");
+	glp_write_prob(_lp, 0, b2_preproc_config(B2_GLPK_DEBUG_FILE).c_str());
 #endif //B2_GLPK_DEBUG
 	build_hash();
 	_motif_set.remove_duplicates(trace_coeffs);

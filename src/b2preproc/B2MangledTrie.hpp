@@ -28,93 +28,50 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #ifndef B2MangledTrie___HPP
 #define B2MangledTrie___HPP
 
-#include "B2MotifSet.hpp"
-
-typedef unsigned int B2MgTState;
-
-
-class B2MgTMotifStruct
-{
-	std::string _str;
-	std::string _purge_mask;
-	int _relative_offset;
-
-public:
-	B2MgTMotifStruct() : _relative_offset(0) { };
-	B2MgTMotifStruct(const B2TraceStruct &trace) : _str(trace.str()), _purge_mask(trace.str().size(), '+'), _relative_offset(-(int)trace.offset())
-	{
-		_purge_mask[trace.offset()] = '.';
-		_purge_mask[trace.offset() + 1] = '.';
-	};
-	const std::string &str() const { return _str; };
-	int relative_offset() const { return _relative_offset; };
-};
+#include "B2MgTOffsetMap.hpp"
+#include "B2MgTStrPurgeMap.hpp"
+#include "B2MgTStateMachine.hpp"
 
 
-class B2MgTStrPurgeMap : public std::hash_map<unsigned int, unsigned int>
-{
-
-public:
-	B2MgTStrPurgeMap() { };
-	B2MgTStrPurgeMap(unsigned int total_str_count)
-	{
-		for(unsigned int str_instance_id = 0; str_instance_id < total_str_count; ++str_instance_id)
-		{
-			(*this)[str_instance_id];
-		};
-	};
-};
-
-
-class B2MgTByteChoicesMap : public B2HashMap<unsigned char, B2MgTStrPurgeMap>
-{
-	unsigned int _total_str_instance_count;
-	unsigned int _cavities_count;
-
-	B2MgTStrPurgeMap _fallback_purge_map;
-
-public:
-	B2MgTByteChoicesMap() : _total_str_instance_count(0), _cavities_count(0) { };
-	void add_str_instance(unsigned int total_str_instance_count, unsigned int preserve_instance_id, unsigned char byte);
-
-	double calc_score(int relative_offset)
-	{
-		//////////////////////////
-		double purge_potential = 0;
-		for(const_iterator byte_it = begin(); byte_it != end(); ++byte_it)
-		{
-			purge_potential += (double)(byte_it->second.size());
-		};
-		purge_potential += (double)(256 - size()) * (double)(_fallback_purge_map.size());
-		purge_potential /= (double)256;
-		purge_potential /= (double)_total_str_instance_count;
-		//////////////////////////
-		double coverage = (double)(_total_str_instance_count - _cavities_count) / (double)_total_str_instance_count;
-		//////////////////////////
-		double score = (coverage * 0.9) + (purge_potential * 0.1);
-		return score;
-	};
-};
-
-
-class B2MgTOffsetMap : public B2HashMap<int, B2MgTByteChoicesMap>
-{
-
-public:
-	void apply_cavities(unsigned int str_instance_id, const B2MgTMotifStruct &motif_struct);
-};
-
-class B2MangledTrie : public B2HashMap<unsigned int, B2MgTMotifStruct>
+class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 {
 	int _trie_leftmost_offset;
 	int _trie_rightmost_offset;
 
-	std::vector<int> _offsets_purge_vec;
+	std::vector<int> _left_offsets_vec;
+	std::vector<int> _right_offsets_vec;
 
 	B2MgTOffsetMap _offset_map;
+	B2MgTStrPurgeMap _aggregate_purge_map;
+
+	B2MgTStateMachine *_mgt_state_machine;
+
+	double proximity(int offset) const
+	{
+		int radius = ((-_trie_leftmost_offset > (_trie_rightmost_offset - 2)) ? -_trie_leftmost_offset : (_trie_rightmost_offset - 2));
+		if(offset >= 2)
+		{
+			double proximity = (double)(offset - 2) / (double)radius;
+			proximity = 1 - proximity;
+			return proximity;
+		}
+		else
+		{
+			double proximity = (double)(-offset - 1) / (double)radius;
+			proximity = 1 - proximity;
+			return proximity;
+		};
+	};
+	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map);
 
 public:
-	B2MangledTrie(const std::vector<B2TraceStruct> &traces_vec);
+	B2MangledTrie(const B2StrSet &str_set, const B2TraceStruct &trace_struct);
+	B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceStruct> &traces_vec);
+	double full_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
+	double partial_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
+	int select_purge_offset();
+	unsigned int purge(int offset);
+	const B2MgTStateMachine &state_machine() const { return *_mgt_state_machine; };
 };
 
 #endif //B2MangledTrie___HPP

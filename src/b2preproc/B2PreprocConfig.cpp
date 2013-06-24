@@ -25,51 +25,16 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2PreprocDefs___HPP
-#define B2PreprocDefs___HPP
-
-
-#include <string>
-#include <vector>
-
-#ifdef __GNUC__
-
-#include <backward/hash_map>
-#define B2HashMap /**/ __gnu_cxx::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (hash_map_inst).erase(iter++); };
-
-namespace __gnu_cxx
-{
-	template<> struct hash<std::string>
-	{
-		unsigned int fnv_hash(const char *bytes, unsigned int len) const
-		{
-			unsigned int hashval = 2166136261U;
-			for(unsigned int i = 0; i < len; ++i)
-			{
-				hashval = (16777619U * hashval) ^ (unsigned char)(bytes[i]);
-			};
-			return hashval;
-		};
-
-		size_t operator () (const std::string &str) const
-		{
-			return fnv_hash(str.c_str(), str.size());
-		};
-	};
-};
-
-#else
-
-#include <hash_map>
-#define B2HashMap /**/ std::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
-
-#endif
-
-#define B2_MGT_STATE_INVALID_ID (0xFFFF)
-#define B2_MGT_INVALID_OFFSET (1)
-
 #include "B2PreprocConfig.hpp"
 
-#endif // B2PreprocDefs___HPP
+B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
+{
+	_argv[B2_STR_SET_FILE] = "str_set.txt";
+	_argv[B2_GLPK_DEBUG_FILE] = "B2-ILP.txt";
+	_argv[B2_COVERAGE_PURGE_FACTOR] = "0.1";
+	_argv[B2_DIVERSITY_PURGE_FACTOR] = "0.9";
+	for(int i = 0; i < argc; ++i)
+	{
+		_argv[i] = argv[i];
+	};
+};

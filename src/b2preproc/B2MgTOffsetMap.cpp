@@ -25,51 +25,24 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2PreprocDefs___HPP
-#define B2PreprocDefs___HPP
+#include "B2MgTOffsetMap.hpp"
 
 
-#include <string>
-#include <vector>
-
-#ifdef __GNUC__
-
-#include <backward/hash_map>
-#define B2HashMap /**/ __gnu_cxx::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (hash_map_inst).erase(iter++); };
-
-namespace __gnu_cxx
+void B2MgTOffsetMap::apply_cavities(unsigned int str_instance_id, const B2MgTStrInstance &str_instance)
 {
-	template<> struct hash<std::string>
+	int leftmost_offset = str_instance.relative_offset();
+	int rightmost_offset = leftmost_offset + str_instance.size();
+	for(iterator offset_it = begin(); offset_it != end(); ++offset_it)
 	{
-		unsigned int fnv_hash(const char *bytes, unsigned int len) const
+		int offset = offset_it->first;
+		if((offset < leftmost_offset) || (rightmost_offset <= offset))
 		{
-			unsigned int hashval = 2166136261U;
-			for(unsigned int i = 0; i < len; ++i)
+			B2MgTByteChoicesMap &choices_map = offset_it->second;
+			for(B2MgTByteChoicesMap::iterator choice_it = choices_map.begin(); choice_it != choices_map.end(); ++choice_it)
 			{
-				hashval = (16777619U * hashval) ^ (unsigned char)(bytes[i]);
+				B2HashMap<unsigned int, unsigned int> &str_purge_map = choice_it->second;
+				str_purge_map.erase(str_instance_id);
 			};
-			return hashval;
-		};
-
-		size_t operator () (const std::string &str) const
-		{
-			return fnv_hash(str.c_str(), str.size());
 		};
 	};
 };
-
-#else
-
-#include <hash_map>
-#define B2HashMap /**/ std::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
-
-#endif
-
-#define B2_MGT_STATE_INVALID_ID (0xFFFF)
-#define B2_MGT_INVALID_OFFSET (1)
-
-#include "B2PreprocConfig.hpp"
-
-#endif // B2PreprocDefs___HPP

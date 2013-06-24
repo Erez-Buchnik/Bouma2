@@ -25,51 +25,39 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2PreprocDefs___HPP
-#define B2PreprocDefs___HPP
+#ifndef B2PreprocConfig___HPP
+#define B2PreprocConfig___HPP
 
 
 #include <string>
-#include <vector>
+#include <hash_map>
 
-#ifdef __GNUC__
-
-#include <backward/hash_map>
-#define B2HashMap /**/ __gnu_cxx::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (hash_map_inst).erase(iter++); };
-
-namespace __gnu_cxx
+enum B2PreprocConfigTxtId
 {
-	template<> struct hash<std::string>
-	{
-		unsigned int fnv_hash(const char *bytes, unsigned int len) const
-		{
-			unsigned int hashval = 2166136261U;
-			for(unsigned int i = 0; i < len; ++i)
-			{
-				hashval = (16777619U * hashval) ^ (unsigned char)(bytes[i]);
-			};
-			return hashval;
-		};
-
-		size_t operator () (const std::string &str) const
-		{
-			return fnv_hash(str.c_str(), str.size());
-		};
-	};
+	B2_STR_SET_FILE = 1,
+	B2_GLPK_DEBUG_FILE,
+	///////////////
+	B2_CONFIG_TXT_COUNT
 };
 
-#else
+enum B2PreprocConfigNumId
+{
+	B2_COVERAGE_PURGE_FACTOR = B2_CONFIG_TXT_COUNT,
+	B2_DIVERSITY_PURGE_FACTOR
+};
 
-#include <hash_map>
-#define B2HashMap /**/ std::hash_map /**/
-#define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
+class B2PreprocConfig
+{
+	std::hash_map<unsigned int, std::string> _argv;
 
-#endif
+public:
+	B2PreprocConfig(const int argc, const char **argv);
+	const std::string txt(B2PreprocConfigTxtId id) { return _argv[id]; };
+	const double num(B2PreprocConfigNumId id) { return atof(_argv[id].c_str()); };
+};
 
-#define B2_MGT_STATE_INVALID_ID (0xFFFF)
-#define B2_MGT_INVALID_OFFSET (1)
+const std::string b2_preproc_config(B2PreprocConfigTxtId id);
+const double b2_preproc_config(B2PreprocConfigNumId id);
 
-#include "B2PreprocConfig.hpp"
 
-#endif // B2PreprocDefs___HPP
+#endif // B2PreprocConfig___HPP

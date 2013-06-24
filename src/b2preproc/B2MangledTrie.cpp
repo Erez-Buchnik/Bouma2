@@ -26,107 +26,274 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 ***********************************************************/
 
 #include "B2MangledTrie.hpp"
+#include "B2MgTStateMachine.hpp"
 
 
-void B2MgTByteChoicesMap::add_str_instance(unsigned int total_str_instance_count, unsigned int preserve_instance_id, unsigned char byte)
+B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const B2TraceStruct &trace_struct) : _trie_leftmost_offset(0), _trie_rightmost_offset(1), _mgt_state_machine(new B2MgTStateMachine)
 {
-	if(_total_str_instance_count == 0)
+	B2StrSet::const_iterator find_it = str_set.find(trace_struct.str());
+	if(find_it != str_set.end())
 	{
-		_total_str_instance_count = total_str_instance_count;
-		_cavities_count = total_str_instance_count;
-	}
-	else if(_total_str_instance_count != total_str_instance_count)
-	{
-		// THROW
-	};
-
-	B2MgTByteChoicesMap::iterator find_it = find(byte);
-	if(find_it != end())
-	{
-		B2MgTStrPurgeMap &str_purge_map = find_it->second;
-		str_purge_map.erase(preserve_instance_id);
+		B2MgTStrInstance str_instance(find_it->second.id(), trace_struct);
+		(*this)[0] = str_instance;
+		_mgt_state_machine->new_terminal(str_instance);
 	}
 	else
 	{
-		B2MgTStrPurgeMap str_purge_map(_total_str_instance_count);
-		str_purge_map.erase(preserve_instance_id);
-		(*this)[byte] = str_purge_map;
-	};
-	--_cavities_count;
-	_fallback_purge_map[preserve_instance_id];
-};
-
-
-void B2MgTOffsetMap::apply_cavities(unsigned int str_instance_id, const B2MgTMotifStruct &motif_struct)
-{
-	int leftmost_offset = motif_struct.relative_offset();
-	int rightmost_offset = leftmost_offset + motif_struct.str().size();
-	for(iterator offset_it = begin(); offset_it != end(); ++offset_it)
-	{
-		int offset = offset_it->first;
-		if((offset < leftmost_offset) || (rightmost_offset <= offset))
-		{
-			B2MgTByteChoicesMap &choices_map = offset_it->second;
-			for(B2MgTByteChoicesMap::iterator choice_it = choices_map.begin(); choice_it != choices_map.end(); ++choice_it)
-			{
-				std::hash_map<unsigned int, unsigned int> &str_purge_map = choice_it->second;
-				str_purge_map.erase(str_instance_id);
-			};
-		};
+		// THROW
 	};
 };
 
-
-B2MangledTrie::B2MangledTrie(const std::vector<B2TraceStruct> &traces_vec) : _trie_leftmost_offset(0), _trie_rightmost_offset(1)
+B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceStruct> &traces_vec) : _trie_leftmost_offset(0), _trie_rightmost_offset(1), _mgt_state_machine(new B2MgTStateMachine)
 {
 	unsigned int str_instance_id = 0;
 	for(std::vector<B2TraceStruct>::const_iterator trace_it = traces_vec.begin(); trace_it != traces_vec.end(); ++trace_it)
 	{
-		B2MgTMotifStruct motif_struct(*trace_it);
-		const unsigned char *bytes = (unsigned char *)(motif_struct.str().c_str());
-		int leftmost_offset = motif_struct.relative_offset();
-		if(_trie_leftmost_offset > leftmost_offset)
+		B2StrSet::const_iterator find_it = str_set.find(trace_it->str());
+		if(find_it != str_set.end())
 		{
-			_trie_leftmost_offset = leftmost_offset;
-		};
-		for(int byte_offset = leftmost_offset; byte_offset < 0; ++byte_offset)
+			B2MgTStrInstance str_instance(find_it->second.id(), *trace_it);
+			const unsigned char *bytes = (unsigned char *)(str_instance.c_str());
+			int leftmost_offset = str_instance.relative_offset();
+			if(_trie_leftmost_offset > leftmost_offset)
+			{
+				_trie_leftmost_offset = leftmost_offset;
+			};
+			for(int byte_offset = leftmost_offset; byte_offset < 0; ++byte_offset)
+			{
+				B2MgTByteChoicesMap &choices_map = _offset_map[byte_offset];
+				choices_map.add_str_instance(traces_vec.size(), str_instance_id, *(bytes++));
+			};
+			bytes += 2;
+			int rightmost_offset = str_instance.relative_offset() + str_instance.size();
+			if(_trie_rightmost_offset < rightmost_offset)
+			{
+				_trie_rightmost_offset = rightmost_offset;
+			};
+			for(int byte_offset = 2; byte_offset < rightmost_offset; ++byte_offset)
+			{
+				B2MgTByteChoicesMap &choices_map = _offset_map[byte_offset];
+				choices_map.add_str_instance(traces_vec.size(), str_instance_id, *(bytes++));
+			};
+			(*this)[str_instance_id++] = str_instance;
+		}
+		else
 		{
-			B2MgTByteChoicesMap &choices_map = _offset_map[byte_offset];
-			choices_map.add_str_instance(traces_vec.size(), str_instance_id, *(bytes++));
+			// THROW
 		};
-		bytes += 2;
-		int rightmost_offset = motif_struct.relative_offset() + motif_struct.str().size();
-		if(_trie_rightmost_offset < rightmost_offset)
-		{
-			_trie_rightmost_offset = rightmost_offset;
-		};
-		for(int byte_offset = 2; byte_offset < rightmost_offset; ++byte_offset)
-		{
-			B2MgTByteChoicesMap &choices_map = _offset_map[byte_offset];
-			choices_map.add_str_instance(traces_vec.size(), str_instance_id, *(bytes++));
-		};
-		(*this)[str_instance_id++] = motif_struct;
 	};
 
-	for(int left_offset = -1, right_offset = 2; 
-		(left_offset >= _trie_leftmost_offset) || (right_offset < _trie_rightmost_offset); 
-		--left_offset, ++right_offset)
+	for(int left_offset = -1; left_offset >= _trie_leftmost_offset; --left_offset)
 	{
-		if(left_offset >= _trie_leftmost_offset)
-		{
-			_offsets_purge_vec.push_back(left_offset);
-		};
-		if(right_offset < _trie_rightmost_offset)
-		{
-			_offsets_purge_vec.push_back(right_offset);
-		};
+		_left_offsets_vec.push_back(left_offset);
+	};
+
+	for(int right_offset = 2; right_offset < _trie_rightmost_offset; ++right_offset)
+	{
+		_right_offsets_vec.push_back(right_offset);
 	};
 
 	for(const_iterator str_instance_it = begin(); str_instance_it != end(); ++str_instance_it)
 	{
 		_offset_map.apply_cavities(str_instance_it->first, str_instance_it->second);
 	};
+};
 
-	B2MgTByteChoicesMap &choices_map = _offset_map[-1];
-	choices_map.calc_score(-1);
+
+double B2MangledTrie::full_coverage_score(const std::vector<int> &offsets_vec, int &best_offset)
+{
+	double score = 0;
+	double best_score = 0;
+	for(std::vector<int>::const_iterator offset_it = offsets_vec.begin(); offset_it != offsets_vec.end(); ++offset_it)
+	{
+		B2MgTOffsetMap::iterator find_it = _offset_map.find(*offset_it);
+		if(find_it != _offset_map.end())
+		{
+			B2MgTByteChoicesMap &choices_map = find_it->second;
+			if(_aggregate_purge_map.size() > 0)
+			{
+				choices_map.clean_purged(_aggregate_purge_map);
+			};
+			if(choices_map.coverage() == 1)
+			{
+				score = choices_map.diversity();
+				if(best_score < score)
+				{
+					best_score = score;
+					best_offset = *offset_it;
+					if(best_score == 1)
+					{
+						break;
+					};
+				};
+			}
+			else
+			{
+				break;
+			};
+		}
+		else
+		{
+			// THROW
+		};
+	};
+	return best_score;
+};
+
+
+double B2MangledTrie::partial_coverage_score(const std::vector<int> &offsets_vec, int &best_offset)
+{
+	double score = 0;
+	double best_score = 0;
+	double prev_coverage = 0;
+	double coverage_purge_factor = b2_preproc_config(B2_COVERAGE_PURGE_FACTOR);
+	double diversity_purge_factor = b2_preproc_config(B2_DIVERSITY_PURGE_FACTOR);
+	for(std::vector<int>::const_iterator offset_it = offsets_vec.begin(); offset_it != offsets_vec.end(); ++offset_it)
+	{
+		B2MgTOffsetMap::iterator find_it = _offset_map.find(*offset_it);
+		if(find_it != _offset_map.end())
+		{
+			B2MgTByteChoicesMap &choices_map = find_it->second;
+			if(_aggregate_purge_map.size() > 0)
+			{
+				choices_map.clean_purged(_aggregate_purge_map);
+			};
+			if((prev_coverage == 0) || (choices_map.coverage() == prev_coverage))
+			{
+				score = (diversity_purge_factor * choices_map.diversity()) + (coverage_purge_factor * choices_map.coverage());
+				if(best_score < score)
+				{
+					best_score = score;
+					best_offset = *offset_it;
+				};
+			}
+			else
+			{
+				break;
+			};
+		}
+		else
+		{
+			// THROW
+		};
+	};
+	return best_score;
+};
+
+
+int B2MangledTrie::select_purge_offset()
+{
+	int best_left_offset = 0;
+	int best_right_offset = 0;
+	double best_score = full_coverage_score(_left_offsets_vec, best_left_offset);
+	if(best_score < full_coverage_score(_right_offsets_vec, best_right_offset))
+	{
+		return best_right_offset;
+	}
+	else if(best_score > 0)
+	{
+		return best_left_offset;
+	}
+	else
+	{
+		best_score = partial_coverage_score(_left_offsets_vec, best_left_offset);
+		if(best_score < partial_coverage_score(_right_offsets_vec, best_right_offset))
+		{
+			return best_right_offset;
+		}
+		else if(best_score > 0)
+		{
+			return best_left_offset;
+		}
+		else
+		{
+			// THROW
+			return 0;
+		};
+	};
+};
+
+
+unsigned int B2MangledTrie::purge(int offset)
+{
+	B2MgTOffsetMap::const_iterator find_it = _offset_map.find(offset);
+	if(find_it != _offset_map.end())
+	{
+		B2MgTState &mgt_state = _mgt_state_machine->new_state();
+		const B2MgTByteChoicesMap &byte_choices_map = find_it->second;
+		for(B2MgTByteChoicesMap::const_iterator byte_it = byte_choices_map.begin(); byte_it != byte_choices_map.end(); ++byte_it)
+		{
+			const B2MgTStrPurgeMap &byte_purge_map = byte_it->second;
+			B2MangledTrie purged_copy = *this;
+			purged_copy.apply_purge_map(offset, byte_purge_map);
+			if(purged_copy.size() > 1)
+			{
+				int purge_offset = purged_copy.select_purge_offset();
+				unsigned int next_state_id = purged_copy.purge(purge_offset);
+				mgt_state.add_transition(byte_it->first, next_state_id);
+			}
+			else if(purged_copy.size() == 1)
+			{
+				const B2MgTTerminal &new_terminal = _mgt_state_machine->new_terminal(purged_copy.begin()->second);
+				mgt_state.add_transition(byte_it->first, new_terminal.id());
+			};
+		};
+		const B2MgTStrPurgeMap &fallback_purge_map = byte_choices_map.fallback_purge_map();
+		B2MangledTrie purged_copy = *this;
+		purged_copy.apply_purge_map(offset, fallback_purge_map);
+		if(purged_copy.size() > 1)
+		{
+			int purge_offset = purged_copy.select_purge_offset();
+			unsigned int next_state_id = purged_copy.purge(purge_offset);
+			mgt_state.add_fallback_transition(next_state_id);
+		};
+		return mgt_state.id();
+	}
+	else
+	{
+		// THROW
+	};
+	return B2_MGT_STATE_INVALID_ID;
+};
+
+
+void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map)
+{
+	_aggregate_purge_map.merge(purge_map);
+	for(iterator str_inst_it = begin(); str_inst_it != end(); )
+	{
+		B2MgTStrPurgeMap::const_iterator find_it = _aggregate_purge_map.find(str_inst_it->first);
+		if(find_it != _aggregate_purge_map.end())
+		{
+			B2_HASH_MAP_ERASE(*this, str_inst_it);
+		}
+		else
+		{
+			int bytes_left = str_inst_it->second.purge_at_offset(offset);
+			++str_inst_it;
+		};
+	};
+	if(offset < 0)
+	{
+		for(std::vector<int>::iterator offset_it = _left_offsets_vec.begin(); offset_it != _left_offsets_vec.end(); ++offset_it)
+		{
+			if(*offset_it == offset)
+			{
+				_left_offsets_vec.erase(offset_it);
+				break;
+			};
+		};
+	}
+	else
+	{
+		for(std::vector<int>::iterator offset_it = _right_offsets_vec.begin(); offset_it != _right_offsets_vec.end(); ++offset_it)
+		{
+			if(*offset_it == offset)
+			{
+				_right_offsets_vec.erase(offset_it);
+				break;
+			};
+		};
+	};
+	_offset_map.erase(offset);
 };
