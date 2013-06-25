@@ -29,25 +29,32 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #define B2MgTState___HPP
 
 #include "B2PreprocDefs.hpp"
+#include "B2MgTTransitional.hpp"
 
 
 class B2MgTState : public B2HashMap<unsigned char, unsigned int>
 {
+	int _relative_offset;
 	unsigned int _id;
 	unsigned int _fallback_transition;
 
+	std::vector<B2MgTTransitional> _transitionals;
+
 public:
-	B2MgTState(unsigned int id = B2_MGT_STATE_INVALID_ID) : _id(id), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };
+	B2MgTState() : _relative_offset(B2_MGT_INVALID_OFFSET), _id(B2_MGT_STATE_INVALID_ID), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };
+	B2MgTState(int relative_offset, unsigned int id) : _relative_offset(relative_offset), _id(id), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };
 	void add_transition(unsigned char byte, unsigned int next_state_id)
 	{
 		(*this)[byte] = next_state_id;
 	};
+	std::vector<B2MgTTransitional> &transitionals() { return _transitionals; };
 	void add_fallback_transition(unsigned int next_state_id)
 	{
 		_fallback_transition = next_state_id;
 	};
 	void set_id(unsigned int id) { _id = id; };
 	unsigned int id() const { return _id; };
+	std::string dump() const;
 };
 
 #endif //B2MgTState___HPP

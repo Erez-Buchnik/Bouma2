@@ -40,7 +40,7 @@ B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const B2TraceStruct &trace
 	}
 	else
 	{
-		// THROW
+		b2_preproc_error(B2_PREPROC_ERROR_PATTERN_STR_NOT_FOUND);
 	};
 };
 
@@ -79,7 +79,7 @@ B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceS
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_BAD_TRACE_SET);
 		};
 	};
 
@@ -134,7 +134,7 @@ double B2MangledTrie::full_coverage_score(const std::vector<int> &offsets_vec, i
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_MGT_BAD_OFFSET_MAP);
 		};
 	};
 	return best_score;
@@ -174,7 +174,7 @@ double B2MangledTrie::partial_coverage_score(const std::vector<int> &offsets_vec
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_MGT_BAD_OFFSET_MAP);
 		};
 	};
 	return best_score;
@@ -207,10 +207,24 @@ int B2MangledTrie::select_purge_offset()
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_MGT_INCONSISTENT_SCORE);
 			return 0;
 		};
 	};
+};
+
+
+unsigned int B2MangledTrie::build()
+{
+	B2MgTStrPurgeMap left_only;
+	B2MgTStrPurgeMap right_only;
+	partition_purge_maps(left_only, right_only);
+	if(left_only.size() + right_only.size() == size())
+	{
+		b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_PIVOT);
+	};
+	int purge_offset = select_purge_offset();
+	return purge(purge_offset);
 };
 
 
@@ -219,17 +233,16 @@ unsigned int B2MangledTrie::purge(int offset)
 	B2MgTOffsetMap::const_iterator find_it = _offset_map.find(offset);
 	if(find_it != _offset_map.end())
 	{
-		B2MgTState &mgt_state = _mgt_state_machine->new_state();
+		B2MgTState &mgt_state = _mgt_state_machine->new_state(offset);
 		const B2MgTByteChoicesMap &byte_choices_map = find_it->second;
 		for(B2MgTByteChoicesMap::const_iterator byte_it = byte_choices_map.begin(); byte_it != byte_choices_map.end(); ++byte_it)
 		{
 			const B2MgTStrPurgeMap &byte_purge_map = byte_it->second;
 			B2MangledTrie purged_copy = *this;
-			purged_copy.apply_purge_map(offset, byte_purge_map);
+			purged_copy.apply_purge_map(offset, byte_purge_map, mgt_state.transitionals());
 			if(purged_copy.size() > 1)
 			{
-				int purge_offset = purged_copy.select_purge_offset();
-				unsigned int next_state_id = purged_copy.purge(purge_offset);
+				unsigned int next_state_id = purged_copy.build();
 				mgt_state.add_transition(byte_it->first, next_state_id);
 			}
 			else if(purged_copy.size() == 1)
@@ -240,24 +253,23 @@ unsigned int B2MangledTrie::purge(int offset)
 		};
 		const B2MgTStrPurgeMap &fallback_purge_map = byte_choices_map.fallback_purge_map();
 		B2MangledTrie purged_copy = *this;
-		purged_copy.apply_purge_map(offset, fallback_purge_map);
+		purged_copy.apply_purge_map(offset, fallback_purge_map, mgt_state.transitionals());
 		if(purged_copy.size() > 1)
 		{
-			int purge_offset = purged_copy.select_purge_offset();
-			unsigned int next_state_id = purged_copy.purge(purge_offset);
+			unsigned int next_state_id = purged_copy.build();
 			mgt_state.add_fallback_transition(next_state_id);
 		};
 		return mgt_state.id();
 	}
 	else
 	{
-		// THROW
+		b2_preproc_error(B2_PREPROC_ERROR_MGT_OFFSET_NOT_FOUND);
 	};
 	return B2_MGT_STATE_INVALID_ID;
 };
 
 
-void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map)
+void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, std::vector<B2MgTTransitional> &transitionals)
 {
 	_aggregate_purge_map.merge(purge_map);
 	for(iterator str_inst_it = begin(); str_inst_it != end(); )
@@ -269,8 +281,18 @@ void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_ma
 		}
 		else
 		{
-			int bytes_left = str_inst_it->second.purge_at_offset(offset);
-			++str_inst_it;
+			unsigned int bytes_left = str_inst_it->second.purge_at_offset(offset);
+			if(bytes_left > 0)
+			{
+				++str_inst_it;
+			}
+			else
+			{
+				const B2MgTStrInstance &str_instance = str_inst_it->second;
+				transitionals.push_back(B2MgTTransitional(str_instance.byte(offset), str_instance.str_id(), str_instance.relative_offset()));
+				b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_TRANSITIONAL);
+				B2_HASH_MAP_ERASE(*this, str_inst_it);
+			};
 		};
 	};
 	if(offset < 0)
@@ -296,4 +318,40 @@ void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_ma
 		};
 	};
 	_offset_map.erase(offset);
+};
+
+
+double B2MangledTrie::proximity(int offset) const
+{
+	int radius = ((-_trie_leftmost_offset > (_trie_rightmost_offset - 2)) ? -_trie_leftmost_offset : (_trie_rightmost_offset - 2));
+	if(offset >= 2)
+	{
+		double proximity = (double)(offset - 2) / (double)radius;
+		proximity = 1 - proximity;
+		return proximity;
+	}
+	else
+	{
+		double proximity = (double)(-offset - 1) / (double)radius;
+		proximity = 1 - proximity;
+		return proximity;
+	};
+};
+
+
+void B2MangledTrie::partition_purge_maps(B2MgTStrPurgeMap &left_only, B2MgTStrPurgeMap &right_only) const
+{
+	left_only.clear();
+	right_only.clear();
+	for(const_iterator str_inst_it = begin(); str_inst_it != end(); ++str_inst_it)
+	{
+		if(str_inst_it->second.rightmost_byte_offset() < 0)
+		{
+			left_only[str_inst_it->first];
+		}
+		else if(str_inst_it->second.leftmost_byte_offset() >= 2)
+		{
+			right_only[str_inst_it->first];
+		};
+	};
 };

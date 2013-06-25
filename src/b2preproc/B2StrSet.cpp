@@ -31,7 +31,7 @@ B2Str::B2Str(unsigned int id, unsigned char *bytes, unsigned int length) : std::
 {
 	if(length < 3)
 	{
-		// THROW
+		b2_preproc_error(B2_PREPROC_ERROR_PATTERN_STR_TOO_SHORT);
 	};
 };
 
@@ -42,6 +42,7 @@ void B2StrSet::add_str(const B2Str &str)
 	if(find_it == end())
 	{
 		(*this)[str] = B2StrStruct(str);
+		b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_PATTERN_STR);
 	}
 	else
 	{

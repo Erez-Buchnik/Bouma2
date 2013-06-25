@@ -51,7 +51,7 @@ public:
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_BAD_MOTIF_SET);
 			return _motif_set;
 		};
 	};

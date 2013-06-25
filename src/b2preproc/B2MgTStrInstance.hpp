@@ -39,60 +39,15 @@ class B2MgTStrInstance : public std::string
 
 public:
 	B2MgTStrInstance() : _relative_offset(0) { };
-	B2MgTStrInstance(unsigned int str_id, const B2TraceStruct &trace) : _str_id(str_id), _purge_mask(trace.str().size(), '+'), _relative_offset(-(int)trace.offset())
-	{
-		(std::string &)(*this) = trace.str();
-		_purge_mask[trace.offset()] = '.';
-		_purge_mask[trace.offset() + 1] = '.';
-	};
+	B2MgTStrInstance(unsigned int str_id, const B2TraceStruct &trace);
 	unsigned int str_id() const { return _str_id; };
+	unsigned char byte(int offset) const { return (*this)[offset - _relative_offset]; };
 	int relative_offset() const { return _relative_offset; };
 	int relative_end_offset() const { return _relative_offset + size(); };
-	unsigned int purge_at_offset(int offset)
-	{
-		if((offset >= _relative_offset) && (offset < _relative_offset + (int)(size())))
-		{
-			_purge_mask[offset - _relative_offset] = '.';
-		};
-		unsigned int byte_count = 0;
-		for(const_iterator byte_it = _purge_mask.begin(); byte_it != _purge_mask.end(); ++byte_it)
-		{
-			if(*byte_it == '+')
-			{
-				++byte_count;
-			};
-		};
-		return byte_count;
-	};
-	int next_segment(std::string &segment, int offset = B2_MGT_INVALID_OFFSET) const
-	{
-		const_iterator byte_it = _purge_mask.begin();
-		if(offset != B2_MGT_INVALID_OFFSET)
-		{
-			byte_it += (offset - _relative_offset);
-		};
-		const_iterator segment_start;
-		unsigned int segment_length;
-		for(; byte_it != _purge_mask.end(); ++byte_it)
-		{
-			if(*byte_it == '+')
-			{
-				break;
-			};
-		};
-		segment_start = byte_it;
-		for(; byte_it != _purge_mask.end(); ++byte_it)
-		{
-			if(*byte_it == '.')
-			{
-				break;
-			};
-		};
-		segment_length = (byte_it - segment_start);
-		int segment_offset = _relative_offset + (segment_start - _purge_mask.begin());
-		segment = this->substr((segment_offset - _relative_offset), segment_length);
-		return segment_offset;
-	};
+	unsigned int purge_at_offset(int offset);
+	int next_segment(std::string &segment, int offset = B2_MGT_INVALID_OFFSET) const;
+	int leftmost_byte_offset() const { return _relative_offset + _purge_mask.find_first_of('+'); };
+	int rightmost_byte_offset() const { return _relative_offset + _purge_mask.find_last_of('+'); };
 };
 
 

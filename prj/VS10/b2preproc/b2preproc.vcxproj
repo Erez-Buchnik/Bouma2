@@ -80,10 +80,15 @@
     <ClCompile Include="..\..\..\src\b2preproc\B2MangledTrie.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2MgTByteChoicesMap.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2MgTOffsetMap.cpp" />
+    <ClCompile Include="..\..\..\src\b2preproc\B2MgTState.cpp" />
+    <ClCompile Include="..\..\..\src\b2preproc\B2MgTStateMachine.cpp" />
+    <ClCompile Include="..\..\..\src\b2preproc\B2MgTStrInstance.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2MgTStrPurgeMap.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2MgTTerminal.cpp" />
+    <ClCompile Include="..\..\..\src\b2preproc\B2MgTTransitional.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2MotifSet.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2PreprocConfig.cpp" />
+    <ClCompile Include="..\..\..\src\b2preproc\B2PreprocDiagnostics.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2StrSet.cpp" />
     <ClCompile Include="..\..\..\src\b2preproc\B2TraceSet.cpp" />
   </ItemGroup>
@@ -99,9 +104,11 @@
     <ClInclude Include="..\..\..\src\b2preproc\B2MgTStrInstance.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2MgTStrPurgeMap.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2MgTTerminal.hpp" />
+    <ClInclude Include="..\..\..\src\b2preproc\B2MgTTransitional.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2MotifSet.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2PreprocConfig.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2PreprocDefs.hpp" />
+    <ClInclude Include="..\..\..\src\b2preproc\B2PreprocDiagnostics.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2StrSet.hpp" />
     <ClInclude Include="..\..\..\src\b2preproc\B2TraceSet.hpp" />
   </ItemGroup>

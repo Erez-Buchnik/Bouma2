@@ -46,7 +46,7 @@ B2TraceStruct::B2TraceStruct(const std::string str, unsigned int offset) : _str(
 {
 	if((_offset + 2) > _str.size())
 	{
-		// THROW
+		b2_preproc_error(B2_PREPROC_ERROR_TRACE_OFFSET_OUT_OF_RANGE);
 	};
 };
 

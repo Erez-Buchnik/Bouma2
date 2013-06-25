@@ -82,7 +82,7 @@ unsigned int B2GlpkHasher::add_single_constraint(unsigned int constraint_idx, co
 		}
 		else
 		{
-			// THROW
+			b2_preproc_error(B2_PREPROC_ERROR_BAD_TRACE_SET);
 		};
 	};
 	return upper_bound;
@@ -167,7 +167,7 @@ void B2GlpkHasher::build_hash()
 	}
 	else
 	{
-		// THROW
+		b2_preproc_error(B2_PREPROC_ERROR_BAD_MOTIF_SET);
 	};
 };
 

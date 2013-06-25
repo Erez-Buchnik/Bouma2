@@ -32,10 +32,10 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 std::string B2MgTTerminal::dump() const
 {
-	int offset = 0;
 	std::stringstream str_strm;
-	str_strm << '[' << _str_id << '|' << _relative_offset << ']' << _id << ':';
-	std::string str_out = "";
+	str_strm << '[' << _relative_offset << '|' << _str_id << ']' << _id << ':';
+	int offset = 0;
+	std::string str_out = "..";
 	for(const_iterator segment_it = begin(); segment_it != end(); ++segment_it)
 	{
 		if(segment_it->first < offset)

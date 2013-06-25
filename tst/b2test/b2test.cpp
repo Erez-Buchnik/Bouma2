@@ -59,8 +59,7 @@ void b2_test(const char *strings_file_path)
 		if(trace_vec.size() > 1)
 		{
 			B2MangledTrie mangled_trie(str_set, trace_vec);
-			int purge_offset = mangled_trie.select_purge_offset();
-			mangled_trie.purge(purge_offset);
+			mangled_trie.build();
 			mgt_state_count = mangled_trie.state_machine().size();
 			mgt_terminal_count = mangled_trie.state_machine().terminals().size();
 			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
@@ -87,14 +86,22 @@ void b2_test(const char *strings_file_path)
 };
 
 #include "B2PreprocConfig.hpp"
+#include "B2PreprocDiagnostics.hpp"
 B2PreprocConfig *preproc_config = NULL;
+B2PreprocDiagnostics *preproc_diagnostics = NULL;
 
 const std::string b2_preproc_config(B2PreprocConfigTxtId id) { return preproc_config->txt(id); };
 const double b2_preproc_config(B2PreprocConfigNumId id) { return preproc_config->num(id); };
+const std::string b2_preproc_msg(unsigned int id) { return preproc_config->msg(id); };
+
+const unsigned int b2_preproc_error(B2PreprocErrorCounterId id) { return preproc_diagnostics->increment(id); };
+const unsigned int b2_preproc_diagnostic(B2PreprocDiagCounterId id) { return preproc_diagnostics->increment(id); };
 
 int main(int argc, char *argv[])
 {
 	preproc_config = new B2PreprocConfig(argc, (const char **)argv);
+	preproc_diagnostics = new B2PreprocDiagnostics;
 	b2_test(preproc_config->txt(B2_STR_SET_FILE).c_str());
+	printf("\n%s\n", preproc_diagnostics->dump().c_str());
 	exit(0);
 };

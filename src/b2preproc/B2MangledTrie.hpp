@@ -46,23 +46,9 @@ class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 
 	B2MgTStateMachine *_mgt_state_machine;
 
-	double proximity(int offset) const
-	{
-		int radius = ((-_trie_leftmost_offset > (_trie_rightmost_offset - 2)) ? -_trie_leftmost_offset : (_trie_rightmost_offset - 2));
-		if(offset >= 2)
-		{
-			double proximity = (double)(offset - 2) / (double)radius;
-			proximity = 1 - proximity;
-			return proximity;
-		}
-		else
-		{
-			double proximity = (double)(-offset - 1) / (double)radius;
-			proximity = 1 - proximity;
-			return proximity;
-		};
-	};
-	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map);
+	double proximity(int offset) const;
+	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, std::vector<B2MgTTransitional> &transitionals);
+	void partition_purge_maps(B2MgTStrPurgeMap &left_only, B2MgTStrPurgeMap &right_only) const;
 
 public:
 	B2MangledTrie(const B2StrSet &str_set, const B2TraceStruct &trace_struct);
@@ -72,6 +58,7 @@ public:
 	int select_purge_offset();
 	unsigned int purge(int offset);
 	const B2MgTStateMachine &state_machine() const { return *_mgt_state_machine; };
+	unsigned int build();
 };
 
 #endif //B2MangledTrie___HPP

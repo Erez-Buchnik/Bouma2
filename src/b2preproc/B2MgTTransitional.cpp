@@ -25,27 +25,13 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2MgTStateMachine___HPP
-#define B2MgTStateMachine___HPP
-
-#include "B2MgTState.hpp"
-#include "B2MgTTerminal.hpp"
 #include "B2MgTTransitional.hpp"
-#include "B2MgTStrInstance.hpp"
+#include <sstream>
 
 
-class B2MgTStateMachine : public B2HashMap<unsigned int, B2MgTState>
+std::string B2MgTTransitional::dump() const
 {
-	unsigned int _node_count;
-	B2HashMap<unsigned int, B2MgTTerminal> _terminals;
-
-public:
-	B2MgTStateMachine() : _node_count(0) { };
-	B2MgTState &new_state(int relative_offset);
-	B2MgTTerminal &new_terminal(const B2MgTStrInstance &str_instance);
-	const B2HashMap<unsigned int, B2MgTTerminal> &terminals() const { return _terminals; };
-	std::string dump() const;
+	std::stringstream str_strm;
+	str_strm << _byte << ">[" << _relative_offset << '|' << _str_id << ']';
+	return str_strm.str();
 };
-
-#endif //B2MgTStateMachine___HPP
-

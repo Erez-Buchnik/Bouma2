@@ -71,5 +71,6 @@ namespace __gnu_cxx
 #define B2_MGT_INVALID_OFFSET (1)
 
 #include "B2PreprocConfig.hpp"
+#include "B2PreprocDiagnostics.hpp"
 
 #endif // B2PreprocDefs___HPP

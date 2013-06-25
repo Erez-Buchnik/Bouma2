@@ -43,8 +43,16 @@ enum B2PreprocConfigTxtId
 enum B2PreprocConfigNumId
 {
 	B2_COVERAGE_PURGE_FACTOR = B2_CONFIG_TXT_COUNT,
-	B2_DIVERSITY_PURGE_FACTOR
+	B2_DIVERSITY_PURGE_FACTOR,
+	///////////////
+	B2_CONFIG_NUM_COUNT
 };
+
+enum B2PreprocConfigMsgId
+{
+	B2_MSG_CONFIG = B2_CONFIG_NUM_COUNT
+};
+
 
 class B2PreprocConfig
 {
@@ -54,10 +62,12 @@ public:
 	B2PreprocConfig(const int argc, const char **argv);
 	const std::string txt(B2PreprocConfigTxtId id) { return _argv[id]; };
 	const double num(B2PreprocConfigNumId id) { return atof(_argv[id].c_str()); };
+	const std::string msg(unsigned int id) { return _argv[B2_MSG_CONFIG + id]; };
 };
 
 const std::string b2_preproc_config(B2PreprocConfigTxtId id);
 const double b2_preproc_config(B2PreprocConfigNumId id);
+const std::string b2_preproc_msg(unsigned int id);
 
 
 #endif // B2PreprocConfig___HPP
