@@ -25,36 +25,23 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
+#ifndef B2MgTPivot___HPP
+#define B2MgTPivot___HPP
 
-#include "B2MgTState.hpp"
-#include <sstream>
+#include "B2PreprocDefs.hpp"
 
 
-std::string B2MgTState::dump() const
+class B2MgTPivot
 {
-	std::stringstream str_strm;
-	str_strm << _relative_offset << '|' << _fallback_transition << ' ' << _id << ':';
-	for(const_iterator segment_it = begin(); segment_it != end(); ++segment_it)
-	{
-		str_strm << segment_it->first << ">" << segment_it->second << ' ';
-	};
-	if(_transitionals.size() > 0)
-	{
-		for(std::vector<B2MgTTransitional>::const_iterator transitional_it = _transitionals.begin(); transitional_it != _transitionals.end(); ++transitional_it)
-		{
-			str_strm << " T" << transitional_it->dump();
-		};
-	};
-	if(_pivots.size() > 0)
-	{
-		for(std::vector<B2MgTPivot>::const_iterator pivot_it = _pivots.begin(); pivot_it != _pivots.end(); ++pivot_it)
-		{
-			str_strm << " P" << pivot_it->dump();
-		};
-	};
-	if(_fallback_pivot_transition != B2_MGT_STATE_INVALID_ID)
-	{
-		str_strm << " Pfb" << _fallback_pivot_transition;
-	};
-	return str_strm.str();
+	unsigned char _byte;
+	unsigned int _pivot_transition;
+
+public:
+	B2MgTPivot() : _pivot_transition(B2_MGT_STATE_INVALID_ID) { };
+	B2MgTPivot(unsigned char byte, unsigned int pivot_transition) : _byte(byte), _pivot_transition(pivot_transition) { };
+	unsigned int transition() const { return _pivot_transition; };
+	std::string dump() const;
 };
+
+#endif //B2MgTPivot___HPP
+

@@ -214,17 +214,42 @@ int B2MangledTrie::select_purge_offset()
 };
 
 
-unsigned int B2MangledTrie::build()
+unsigned int B2MangledTrie::build_pivot()
 {
 	B2MgTStrPurgeMap left_only;
 	B2MgTStrPurgeMap right_only;
 	partition_purge_maps(left_only, right_only);
+	unsigned int pivot_state_id = B2_MGT_STATE_INVALID_ID;
 	if(left_only.size() + right_only.size() == size())
 	{
+		B2MangledTrie pivot_copy = *this;
+		pivot_copy._aggregate_purge_map.merge(left_only);
+		int pivot_purge_offset = pivot_copy.select_purge_offset();
+		pivot_state_id = pivot_copy.purge(pivot_purge_offset);
+		_aggregate_purge_map.merge(right_only);
 		b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_PIVOT);
 	};
+	return pivot_state_id;
+};
+
+
+unsigned int B2MangledTrie::build()
+{
 	int purge_offset = select_purge_offset();
 	return purge(purge_offset);
+};
+
+
+void B2MangledTrie::get_valid_bytes(int offset, std::hash_map<unsigned char, unsigned int> &valid_bytes) const
+{
+	valid_bytes.clear();
+	for(const_iterator str_inst_it = begin(); str_inst_it != end(); ++str_inst_it)
+	{
+		if(str_inst_it->second.offset_within_range(offset))
+		{
+			valid_bytes[str_inst_it->second.byte(offset)];
+		};
+	};
 };
 
 
@@ -235,27 +260,36 @@ unsigned int B2MangledTrie::purge(int offset)
 	{
 		B2MgTState &mgt_state = _mgt_state_machine->new_state(offset);
 		const B2MgTByteChoicesMap &byte_choices_map = find_it->second;
+		std::hash_map<unsigned char, unsigned int> valid_bytes;
+		get_valid_bytes(offset, valid_bytes);
 		for(B2MgTByteChoicesMap::const_iterator byte_it = byte_choices_map.begin(); byte_it != byte_choices_map.end(); ++byte_it)
 		{
-			const B2MgTStrPurgeMap &byte_purge_map = byte_it->second;
-			B2MangledTrie purged_copy = *this;
-			purged_copy.apply_purge_map(offset, byte_purge_map, mgt_state.transitionals());
-			if(purged_copy.size() > 1)
+			std::hash_map<unsigned char, unsigned int>::const_iterator find_it = valid_bytes.find(byte_it->first);
+			if(find_it != valid_bytes.end())
 			{
-				unsigned int next_state_id = purged_copy.build();
-				mgt_state.add_transition(byte_it->first, next_state_id);
-			}
-			else if(purged_copy.size() == 1)
-			{
-				const B2MgTTerminal &new_terminal = _mgt_state_machine->new_terminal(purged_copy.begin()->second);
-				mgt_state.add_transition(byte_it->first, new_terminal.id());
+				const B2MgTStrPurgeMap &byte_purge_map = byte_it->second;
+				B2MangledTrie purged_copy = *this;
+				purged_copy.apply_purge_map(offset, byte_purge_map, mgt_state);
+				if(purged_copy.size() > 1)
+				{
+					mgt_state.add_pivot(B2MgTPivot(byte_it->first, purged_copy.build_pivot()));
+					unsigned int next_state_id = purged_copy.build();
+					mgt_state.add_transition(byte_it->first, next_state_id);
+				}
+				else if(purged_copy.size() == 1)
+				{
+					const B2MgTTerminal &new_terminal = _mgt_state_machine->new_terminal(purged_copy.begin()->second);
+					mgt_state.add_transition(byte_it->first, new_terminal.id());
+				};
 			};
 		};
 		const B2MgTStrPurgeMap &fallback_purge_map = byte_choices_map.fallback_purge_map();
 		B2MangledTrie purged_copy = *this;
-		purged_copy.apply_purge_map(offset, fallback_purge_map, mgt_state.transitionals());
+		purged_copy.apply_purge_map(offset, fallback_purge_map, mgt_state);
 		if(purged_copy.size() > 1)
 		{
+			mgt_state.add_fallback_pivot(purged_copy.build_pivot());
+			unsigned int pivot_transition = purged_copy.build_pivot();
 			unsigned int next_state_id = purged_copy.build();
 			mgt_state.add_fallback_transition(next_state_id);
 		};
@@ -269,7 +303,7 @@ unsigned int B2MangledTrie::purge(int offset)
 };
 
 
-void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, std::vector<B2MgTTransitional> &transitionals)
+void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, B2MgTState &mgt_state)
 {
 	_aggregate_purge_map.merge(purge_map);
 	for(iterator str_inst_it = begin(); str_inst_it != end(); )
@@ -289,7 +323,7 @@ void B2MangledTrie::apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_ma
 			else
 			{
 				const B2MgTStrInstance &str_instance = str_inst_it->second;
-				transitionals.push_back(B2MgTTransitional(str_instance.byte(offset), str_instance.str_id(), str_instance.relative_offset()));
+				mgt_state.add_transitional(B2MgTTransitional(str_instance.byte(offset), str_instance.str_id(), str_instance.relative_offset()));
 				b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_TRANSITIONAL);
 				B2_HASH_MAP_ERASE(*this, str_inst_it);
 			};

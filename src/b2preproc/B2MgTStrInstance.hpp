@@ -42,6 +42,7 @@ public:
 	B2MgTStrInstance(unsigned int str_id, const B2TraceStruct &trace);
 	unsigned int str_id() const { return _str_id; };
 	unsigned char byte(int offset) const { return (*this)[offset - _relative_offset]; };
+	bool offset_within_range(int offset) const { return ((offset >= _relative_offset) && (offset < (_relative_offset + (int)size()))); };
 	int relative_offset() const { return _relative_offset; };
 	int relative_end_offset() const { return _relative_offset + size(); };
 	unsigned int purge_at_offset(int offset);

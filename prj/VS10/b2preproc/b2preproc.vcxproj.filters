@@ -63,6 +63,9 @@
     <ClCompile Include="..\..\..\src\b2preproc\B2MgTTransitional.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\b2preproc\B2MgTPivot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\b2preproc\B2StrSet.hpp">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\b2preproc\B2MgTTransitional.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\b2preproc\B2MgTPivot.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

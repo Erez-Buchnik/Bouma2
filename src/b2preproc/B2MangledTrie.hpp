@@ -47,7 +47,7 @@ class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 	B2MgTStateMachine *_mgt_state_machine;
 
 	double proximity(int offset) const;
-	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, std::vector<B2MgTTransitional> &transitionals);
+	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, B2MgTState &mgt_state);
 	void partition_purge_maps(B2MgTStrPurgeMap &left_only, B2MgTStrPurgeMap &right_only) const;
 
 public:
@@ -56,8 +56,10 @@ public:
 	double full_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
 	double partial_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
 	int select_purge_offset();
+	void get_valid_bytes(int offset, std::hash_map<unsigned char, unsigned int> &valid_bytes) const;
 	unsigned int purge(int offset);
 	const B2MgTStateMachine &state_machine() const { return *_mgt_state_machine; };
+	unsigned int build_pivot();
 	unsigned int build();
 };
 
