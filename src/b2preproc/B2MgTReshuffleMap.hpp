@@ -25,29 +25,36 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2MgTStateMachine___HPP
-#define B2MgTStateMachine___HPP
+#ifndef B2MgTReshuffleMap___HPP
+#define B2MgTReshuffleMap___HPP
 
-#include "B2MgTState.hpp"
-#include "B2MgTTerminal.hpp"
-#include "B2MgTTransitional.hpp"
-#include "B2MgTStrInstance.hpp"
+#include "B2MgTStateMachine.hpp"
 
 
-class B2MgTStateMachine : public B2HashMap<unsigned int, B2MgTState>
+class B2MgTReshuffleMap : public B2HashMap<unsigned int, unsigned int>
 {
-	unsigned int _node_count;
-	B2HashMap<unsigned int, B2MgTTerminal> _terminals;
+	B2HashMap<unsigned int, unsigned int> _reshuffled_terminals;
 
 public:
-	B2MgTStateMachine() : _node_count(0) { };
-	B2MgTState &new_state(int relative_offset);
-	const B2MgTTerminal &new_terminal(const B2MgTStrInstance &str_instance);
-	const B2HashMap<unsigned int, B2MgTTerminal> &terminals() const { return _terminals; };
-	B2HashMap<unsigned int, B2MgTTerminal> &terminals() { return _terminals; };
-	unsigned int longest_transition() const;
-	std::string dump() const;
+	B2MgTReshuffleMap(const B2MgTStateMachine &state_machine);
+	void reshuffle(unsigned int &id) const
+	{
+		const_iterator state_it = find(id);
+		if(state_it != end())
+		{
+			id = state_it->second;
+		}
+		else
+		{
+			B2HashMap<unsigned int, unsigned int>::const_iterator terminal_it = _reshuffled_terminals.find(id);
+			if(terminal_it != _reshuffled_terminals.end())
+			{
+				id = terminal_it->second;
+			};
+		};
+	};
+	void reshuffle(B2MgTStateMachine &state_machine);
 };
 
-#endif //B2MgTStateMachine___HPP
+#endif //B2MgTReshuffleMap___HPP
 

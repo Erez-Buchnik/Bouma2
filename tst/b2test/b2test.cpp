@@ -58,6 +58,7 @@ void b2_test(const char *strings_file_path)
 		unsigned int mgt_terminal_count = 0;
 		B2MangledTrie mangled_trie(str_set, trace_vec);
 		mangled_trie.build();
+		mangled_trie.reshuffle_state_machine();
 		if(trace_vec.size() > 1)
 		{
 			mgt_state_count = mangled_trie.state_machine().size();

@@ -30,6 +30,8 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 #include "B2PreprocDefs.hpp"
 
+class B2MgTReshuffleMap;
+
 
 class B2MgTTerminalBase : public B2HashMap<int, std::string>
 {
@@ -58,6 +60,7 @@ public:
 	void set_id(unsigned int id) { _id = id; };
 	unsigned int id() const { return _id; };
 	bool operator == (const B2MgTTerminal &other) const { return ((const B2MgTTerminalBase &)*this == (const B2MgTTerminalBase &)other); };
+	void reshuffle(const B2MgTReshuffleMap &reshuffle_map);
 	std::string dump() const;
 };
 

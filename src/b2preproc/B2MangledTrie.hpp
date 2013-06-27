@@ -32,6 +32,8 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MgTStrPurgeMap.hpp"
 #include "B2MgTStateMachine.hpp"
 
+class B2MgTReshuffleMap;
+
 
 class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 {
@@ -62,6 +64,7 @@ public:
 	const B2MgTStateMachine &state_machine() const { return *_mgt_state_machine; };
 	unsigned int build_pivot();
 	unsigned int build();
+	void reshuffle_state_machine();
 };
 
 #endif //B2MangledTrie___HPP

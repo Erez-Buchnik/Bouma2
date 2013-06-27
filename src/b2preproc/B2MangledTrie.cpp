@@ -27,6 +27,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 #include "B2MangledTrie.hpp"
 #include "B2MgTStateMachine.hpp"
+#include "B2MgTReshuffleMap.hpp"
 
 
 void B2MangledTrie::init_single_str_trie(const B2StrSet &str_set, const B2TraceStruct &trace_struct)
@@ -251,6 +252,10 @@ unsigned int B2MangledTrie::build_pivot()
 				int purge_offset = pivot_copy.select_purge_offset();
 				pivot_state_id = pivot_copy.purge(purge_offset);
 				b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_PIVOT);
+				if(left_only.size() == 1)
+				{
+					b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_SINGLE_STR_PIVOT);
+				};
 				//////////////////////////
 				apply_purge_map(left_only);
 			};
@@ -471,4 +476,11 @@ void B2MangledTrie::partition_purge_maps(B2MgTStrPurgeMap &left_only, B2MgTStrPu
 			right_only[str_inst_it->first];
 		};
 	};
+};
+
+
+void B2MangledTrie::reshuffle_state_machine()
+{
+	B2MgTReshuffleMap reshuffle_map(*_mgt_state_machine);
+	reshuffle_map.reshuffle(*_mgt_state_machine);
 };

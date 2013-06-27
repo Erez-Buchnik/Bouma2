@@ -27,6 +27,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 
 #include "B2MgTState.hpp"
+#include "B2MgTReshuffleMap.hpp"
 #include <sstream>
 
 
@@ -57,4 +58,62 @@ std::string B2MgTState::dump() const
 		str_strm << " Pfb" << _pivot_fallback_transition;
 	};
 	return str_strm.str();
+};
+
+
+unsigned int B2MgTState::longest_transition() const
+{
+	int max_distance = 0;
+	for(const_iterator transition_it = begin(); transition_it != end(); ++transition_it)
+	{
+		if(transition_it->second != B2_MGT_STATE_INVALID_ID)
+		{
+			int transition_distance = (transition_it->second - _id);
+			if(transition_distance < 0)
+			{
+				transition_distance = -transition_distance;
+			};
+			if(max_distance < transition_distance)
+			{
+				max_distance = transition_distance;
+			};
+		};
+	};
+	if(_fallback_transition != B2_MGT_STATE_INVALID_ID)
+	{
+		int transition_distance = (_fallback_transition - _id);
+		if(transition_distance < 0)
+		{
+			transition_distance = -transition_distance;
+		};
+		if(max_distance < transition_distance)
+		{
+			max_distance = transition_distance;
+		};
+	};
+	if(_pivot_fallback_transition != B2_MGT_STATE_INVALID_ID)
+	{
+		int transition_distance = (_pivot_fallback_transition - _id);
+		if(transition_distance < 0)
+		{
+			transition_distance = -transition_distance;
+		};
+		if(max_distance < transition_distance)
+		{
+			max_distance = transition_distance;
+		};
+	};
+	return max_distance;
+};
+
+
+void B2MgTState::reshuffle(const B2MgTReshuffleMap &reshuffle_map)
+{
+	reshuffle_map.reshuffle(_id);
+	for(iterator transition_it = begin(); transition_it != end(); ++transition_it)
+	{
+		reshuffle_map.reshuffle(transition_it->second);
+	};
+	reshuffle_map.reshuffle(_fallback_transition);
+	reshuffle_map.reshuffle(_pivot_fallback_transition);
 };

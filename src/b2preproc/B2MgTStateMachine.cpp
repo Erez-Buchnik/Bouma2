@@ -26,6 +26,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 ***********************************************************/
 
 #include "B2MgTStateMachine.hpp"
+#include <sstream>
 
 
 B2MgTState &B2MgTStateMachine::new_state(int relative_offset)
@@ -62,6 +63,7 @@ const B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str
 
 std::string B2MgTStateMachine::dump() const
 {
+	std::stringstream str_strm;
 	std::string str_out = "";
 	for(const_iterator state_it = begin(); state_it != end(); ++state_it)
 	{
@@ -71,5 +73,21 @@ std::string B2MgTStateMachine::dump() const
 	{
 		str_out += terminal_it->second.dump() + "\n";
 	};
-	return str_out;
+	str_strm << str_out << " Longest trans.:" << longest_transition() << std::endl;
+	return str_strm.str();
+};
+
+
+unsigned int B2MgTStateMachine::longest_transition() const
+{
+	unsigned int max_distance = 0;
+	for(const_iterator state_it = begin(); state_it != end(); ++state_it)
+	{
+		unsigned int max_state_distance = state_it->second.longest_transition();
+		if(max_distance < max_state_distance)
+		{
+			max_distance = max_state_distance;
+		};
+	};
+	return max_distance;
 };

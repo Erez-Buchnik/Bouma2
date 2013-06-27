@@ -27,6 +27,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 
 #include "B2MgTTerminal.hpp"
+#include "B2MgTReshuffleMap.hpp"
 #include <sstream>
 
 
@@ -61,4 +62,10 @@ std::string B2MgTTerminal::dump() const
 	};
 	str_strm << str_out;
 	return str_strm.str();
+};
+
+
+void B2MgTTerminal::reshuffle(const B2MgTReshuffleMap &reshuffle_map)
+{
+	reshuffle_map.reshuffle(_id);
 };

@@ -56,6 +56,7 @@ B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_TRACE_COEFF] = "Preprocessing: Added Trace Coefficient";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_TRANSITIONAL] = "Preprocessing: Mangled-Trie Transitional";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_PIVOT] = "Preprocessing: Mangled-Trie Pivot";
+	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_SINGLE_STR_PIVOT] = "Preprocessing: Mangled-Trie Single-String Pivot";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_STATE] = "Preprocessing: Mangled-Trie State";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_TERMINAL] = "Preprocessing: Mangled-Trie Terminal";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_MISSING_COEFF_FOR_MOTIF] = "Preprocessing: Missing Coefficient for Motif";

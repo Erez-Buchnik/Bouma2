@@ -32,6 +32,8 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MgTTransitional.hpp"
 #include "B2MgTPivot.hpp"
 
+class B2MgTReshuffleMap;
+
 
 class B2MgTState : public B2HashMap<unsigned char, unsigned int>
 {
@@ -71,6 +73,8 @@ public:
 	};
 	void set_id(unsigned int id) { _id = id; };
 	unsigned int id() const { return _id; };
+	unsigned int longest_transition() const;
+	void reshuffle(const B2MgTReshuffleMap &reshuffle_map);
 	std::string dump() const;
 };
 
