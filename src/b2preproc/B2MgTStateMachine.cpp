@@ -36,7 +36,7 @@ B2MgTState &B2MgTStateMachine::new_state(int relative_offset)
 };
 
 
-B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str_instance)
+const B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str_instance)
 {
 	B2MgTTerminal terminal(str_instance.str_id(), str_instance.relative_offset(), _node_count);
 	std::string segment;
@@ -46,6 +46,13 @@ B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str_insta
 	{
 		terminal[offset] = segment;
 		offset += segment.size();
+	};
+	for(B2HashMap<unsigned int, B2MgTTerminal>::const_iterator match_it = _terminals.begin(); match_it != _terminals.end(); ++match_it)
+	{
+		if(match_it->second == terminal)
+		{
+			return match_it->second;
+		};
 	};
 	_terminals[_node_count] = terminal;
 	b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_TERMINAL);

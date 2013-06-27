@@ -42,7 +42,7 @@ class B2MgTStateMachine : public B2HashMap<unsigned int, B2MgTState>
 public:
 	B2MgTStateMachine() : _node_count(0) { };
 	B2MgTState &new_state(int relative_offset);
-	B2MgTTerminal &new_terminal(const B2MgTStrInstance &str_instance);
+	const B2MgTTerminal &new_terminal(const B2MgTStrInstance &str_instance);
 	const B2HashMap<unsigned int, B2MgTTerminal> &terminals() const { return _terminals; };
 	std::string dump() const;
 };

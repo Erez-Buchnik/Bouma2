@@ -347,19 +347,6 @@ unsigned int B2MangledTrie::purge(int offset)
 				purged_copy.apply_purge_map(offset, byte_purge_map, mgt_state);
 				unsigned int next_state_id = purged_copy.build();
 				mgt_state.add_transition(byte_it->first, next_state_id);
-#if 0
-				if(purged_copy.size() > 1)
-				{
-					mgt_state.add_pivot(B2MgTPivot(byte_it->first, purged_copy.build_pivot()));
-					unsigned int next_state_id = purged_copy.build();
-					mgt_state.add_transition(byte_it->first, next_state_id);
-				}
-				else if(purged_copy.size() == 1)
-				{
-					const B2MgTTerminal &new_terminal = _mgt_state_machine->new_terminal(purged_copy.begin()->second);
-					mgt_state.add_transition(byte_it->first, new_terminal.id());
-				};
-#endif
 			};
 		};
 		const B2MgTStrPurgeMap &fallback_purge_map = byte_choices_map.fallback_purge_map();
@@ -367,15 +354,6 @@ unsigned int B2MangledTrie::purge(int offset)
 		purged_copy.apply_purge_map(offset, fallback_purge_map, mgt_state);
 		unsigned int next_state_id = purged_copy.build();
 		mgt_state.add_fallback_transition(next_state_id);
-#if 0
-		if(purged_copy.size() > 1)
-		{
-			mgt_state.add_fallback_pivot(purged_copy.build_pivot());
-			unsigned int pivot_transition = purged_copy.build_pivot();
-			unsigned int next_state_id = purged_copy.build();
-			mgt_state.add_fallback_transition(next_state_id);
-		};
-#endif
 		return mgt_state.id();
 	}
 	else
