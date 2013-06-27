@@ -41,7 +41,7 @@ public:
 	B2MgTByteChoicesMap() : _total_str_instance_count(0) { };
 	void add_str_instance(unsigned int total_str_instance_count, unsigned int preserve_instance_id, unsigned char byte);
 	const B2MgTStrPurgeMap fallback_purge_map() const { return _fallback_purge_map; };
-	void clean_purged(const B2MgTStrPurgeMap &purge_map);
+	void clean_purged(const B2MgTStrPurgeMap &purge_map, const std::hash_map<unsigned char, unsigned int> &valid_bytes);
 
 	double coverage() const;
 	double diversity() const;

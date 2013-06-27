@@ -118,7 +118,9 @@ double B2MangledTrie::full_coverage_score(const std::vector<int> &offsets_vec, i
 			B2MgTByteChoicesMap &choices_map = find_it->second;
 			if(_aggregate_purge_map.size() > 0)
 			{
-				choices_map.clean_purged(_aggregate_purge_map);
+				std::hash_map<unsigned char, unsigned int> valid_bytes;
+				get_valid_bytes(*offset_it, valid_bytes);
+				choices_map.clean_purged(_aggregate_purge_map, valid_bytes);
 			};
 			if(choices_map.coverage() == 1)
 			{
@@ -162,7 +164,9 @@ double B2MangledTrie::partial_coverage_score(const std::vector<int> &offsets_vec
 			B2MgTByteChoicesMap &choices_map = find_it->second;
 			if(_aggregate_purge_map.size() > 0)
 			{
-				choices_map.clean_purged(_aggregate_purge_map);
+				std::hash_map<unsigned char, unsigned int> valid_bytes;
+				get_valid_bytes(*offset_it, valid_bytes);
+				choices_map.clean_purged(_aggregate_purge_map, valid_bytes);
 			};
 			if((prev_coverage == 0) || (choices_map.coverage() == prev_coverage))
 			{
