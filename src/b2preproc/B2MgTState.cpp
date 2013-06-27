@@ -52,9 +52,9 @@ std::string B2MgTState::dump() const
 			str_strm << " P" << pivot_it->dump();
 		};
 	};
-	if(_fallback_pivot_transition != B2_MGT_STATE_INVALID_ID)
+	if(_pivot_fallback_transition != B2_MGT_STATE_INVALID_ID)
 	{
-		str_strm << " Pfb" << _fallback_pivot_transition;
+		str_strm << " Pfb" << _pivot_fallback_transition;
 	};
 	return str_strm.str();
 };

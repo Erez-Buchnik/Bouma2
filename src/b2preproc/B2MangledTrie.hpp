@@ -47,11 +47,12 @@ class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 	B2MgTStateMachine *_mgt_state_machine;
 
 	double proximity(int offset) const;
+	void apply_purge_map(const B2MgTStrPurgeMap &purge_map);
 	void apply_purge_map(int offset, const B2MgTStrPurgeMap &purge_map, B2MgTState &mgt_state);
 	void partition_purge_maps(B2MgTStrPurgeMap &left_only, B2MgTStrPurgeMap &right_only) const;
+	void init_single_str_trie(const B2StrSet &str_set, const B2TraceStruct &trace_struct);
 
 public:
-	B2MangledTrie(const B2StrSet &str_set, const B2TraceStruct &trace_struct);
 	B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceStruct> &traces_vec);
 	double full_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
 	double partial_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);

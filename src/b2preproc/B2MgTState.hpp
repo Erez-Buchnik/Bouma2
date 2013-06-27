@@ -38,7 +38,7 @@ class B2MgTState : public B2HashMap<unsigned char, unsigned int>
 	int _relative_offset;
 	unsigned int _id;
 	unsigned int _fallback_transition;
-	unsigned int _fallback_pivot_transition;
+	unsigned int _pivot_fallback_transition;
 
 
 	std::vector<B2MgTPivot> _pivots;
@@ -46,9 +46,9 @@ class B2MgTState : public B2HashMap<unsigned char, unsigned int>
 
 public:
 	B2MgTState() : 
-		_relative_offset(B2_MGT_INVALID_OFFSET), _id(B2_MGT_STATE_INVALID_ID), _fallback_transition(B2_MGT_STATE_INVALID_ID), _fallback_pivot_transition(B2_MGT_STATE_INVALID_ID) { };
+		_relative_offset(B2_MGT_INVALID_OFFSET), _id(B2_MGT_STATE_INVALID_ID), _fallback_transition(B2_MGT_STATE_INVALID_ID), _pivot_fallback_transition(B2_MGT_STATE_INVALID_ID) { };
 	B2MgTState(int relative_offset, unsigned int id) : 
-		_relative_offset(relative_offset), _id(id), _fallback_transition(B2_MGT_STATE_INVALID_ID), _fallback_pivot_transition(B2_MGT_STATE_INVALID_ID) { };
+		_relative_offset(relative_offset), _id(id), _fallback_transition(B2_MGT_STATE_INVALID_ID), _pivot_fallback_transition(B2_MGT_STATE_INVALID_ID) { };
 	void add_transition(unsigned char byte, unsigned int next_state_id)
 	{
 		(*this)[byte] = next_state_id;
@@ -61,9 +61,9 @@ public:
 			_pivots.push_back(pivot);
 		};
 	};
-	void add_fallback_pivot(unsigned int fallback_pivot_transition)
+	void add_pivot_fallback(unsigned int pivot_fallback_transition)
 	{
-		_fallback_pivot_transition = fallback_pivot_transition;
+		_pivot_fallback_transition = pivot_fallback_transition;
 	};
 	void add_fallback_transition(unsigned int next_state_id)
 	{

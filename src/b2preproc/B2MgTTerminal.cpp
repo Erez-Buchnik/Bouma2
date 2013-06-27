@@ -38,14 +38,25 @@ std::string B2MgTTerminal::dump() const
 	std::string str_out = "..";
 	for(const_iterator segment_it = begin(); segment_it != end(); ++segment_it)
 	{
-		if(segment_it->first < offset)
+		int segment_start = segment_it->first;
+		int segment_end = (segment_it->first + segment_it->second.size());
+		int str_out_end = (offset + str_out.size());
+		if(segment_end <= offset)
 		{
-			str_out = segment_it->second + std::string((offset - (segment_it->first + segment_it->second.size())), ' ') + str_out;
-			offset = segment_it->first;
+			str_out = segment_it->second + std::string((offset - segment_end), ' ') + str_out;
+			offset = segment_start;
+		}
+		else if(str_out_end <= segment_start)
+		{
+			str_out += std::string((segment_start - str_out_end), ' ') + segment_it->second;
+		}
+		else if((offset <= segment_start) && (segment_end <= str_out_end))
+		{
+			str_out.replace((segment_start - offset), segment_it->second.size(), segment_it->second);
 		}
 		else
 		{
-			str_out += std::string((segment_it->first - (offset + str_out.size())), ' ') + segment_it->second;
+			b2_preproc_error(B2_PREPROC_ERROR_MGT_BAD_TERMINAL);
 		};
 	};
 	str_strm << str_out;

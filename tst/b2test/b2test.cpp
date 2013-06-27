@@ -56,17 +56,16 @@ void b2_test(const char *strings_file_path)
 		const std::vector<B2TraceStruct> &trace_vec = motif_it->second;
 		unsigned int mgt_state_count = 0;
 		unsigned int mgt_terminal_count = 0;
+		B2MangledTrie mangled_trie(str_set, trace_vec);
+		mangled_trie.build();
 		if(trace_vec.size() > 1)
 		{
-			B2MangledTrie mangled_trie(str_set, trace_vec);
-			mangled_trie.build();
 			mgt_state_count = mangled_trie.state_machine().size();
 			mgt_terminal_count = mangled_trie.state_machine().terminals().size();
 			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
 		}
 		else
 		{
-			B2MangledTrie mangled_trie(str_set, *trace_vec.begin());
 			mgt_state_count = 0;
 			mgt_terminal_count = 1;
 			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());

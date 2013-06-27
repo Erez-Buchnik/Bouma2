@@ -42,11 +42,13 @@ B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_UNSPECIFIED] = "Preproc ERROR: Unspecified Error";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_BAD_TRACE_SET] = "Preproc ERROR: Bad Trace-Set";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_BAD_MOTIF_SET] = "Preproc ERROR: Bad Motif-Set";
-	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_BAD_OFFSET_MAP] = "Preproc ERROR: Bad Mangled-Trie Offset-Map";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_PATTERN_STR_NOT_FOUND] = "Preproc ERROR: Pattern-String Not Found";
+	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_BAD_OFFSET_MAP] = "Preproc ERROR: Bad Mangled-Trie Offset-Map";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_INCONSISTENT_SCORE] = "Preproc ERROR: Inconsistent Mangled-Trie Offset Score";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_OFFSET_NOT_FOUND] = "Preproc ERROR: Mangled-Trie Offset Not Found";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_BAD_BYTE_CHOICES_MAP] = "Preproc ERROR: Bad Mangled-Trie Byte-Choices Map";
+	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_STATE_NOT_FOUND] = "Preproc ERROR: Mangled-Trie State Not Found";
+	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_MGT_BAD_TERMINAL] = "Preproc ERROR: Bad Mangled-Trie Terminal";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_PATTERN_STR_TOO_SHORT] = "Preproc ERROR: Pattern-String Too Short";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_TRACE_OFFSET_OUT_OF_RANGE] = "Preproc ERROR: Trace-Offset is Out of Range";
 	//////////////////////
