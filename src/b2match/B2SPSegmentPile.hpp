@@ -30,11 +30,20 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 class B2SPSegmentPile
 {
+	unsigned char *_pile;
 
 public:
-	unsigned int match(const unsigned char *subject_position, const unsigned int segment_offset, const unsigned int segment_length) const
+	unsigned int match(const unsigned char *subject_ptr, const unsigned int segment_offset, const unsigned int segment_length) const
 	{
-    return 0;
+		unsigned char *segment_end = segment + segment_length;
+		for(unsigned char *segment_ptr = _pile + segment_offset; segment_ptr < segment_end; ++segment_ptr, ++subject_ptr)
+		{
+			if(*segment_ptr != *subject_ptr)
+			{
+				return 1;
+			};
+		};
+		return 0;
 	};
 };
 
