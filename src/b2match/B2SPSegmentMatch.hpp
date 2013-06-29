@@ -1,4 +1,3 @@
-
 /***********************************************************
 
 Bouma2 - A Multiple String Match Algorithm
@@ -36,7 +35,7 @@ class B2SPSegmentMatch
 	unsigned char _segment_length;
 
 public:
-	unsigned int match(const char *motif_position, const B2SPSegmentPile &segment_pile) const
+	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
 	{
     return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
 	};
