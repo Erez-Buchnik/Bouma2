@@ -1,0 +1,42 @@
+
+TODO:
+=====
+
+- Add match-time support for pivots
+
+- Add match-time support for transitionals
+
+- Add match data-structure building procedures
+
+- Complete match-procedure
+
+- C++ API
+
+- C API
+
+- Correctness test
+
+- Versioning
+
+
+MILESTONE: v0.1
+---------------
+
+
+- Experiment with motif coefficients
+
+- Experiment with state reshuffle
+
+- Performance benchmark
+
+- Multi-threading benchmark
+
+- Support for case-insensitive match
+
+- Support for match over fragmented input
+
+- Support for 1-byte / 2-byte long strings (low priority)
+
+
+
+
