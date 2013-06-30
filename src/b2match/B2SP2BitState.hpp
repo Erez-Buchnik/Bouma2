@@ -24,25 +24,45 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2SPSegmentMatch___HPP
-#define B2SPSegmentMatch___HPP
+#ifndef B2SP2BitState___HPP
+#define B2SP2BitState___HPP
 
 
-#include "B2SPSegmentPile.hpp"
+#include "B2SPStateBase.hpp"
 
 
-class B2SPSegmentMatch
+class B2SP2BitState : public B2SPStateBase
 {
-	char _relative_offset;
-	unsigned char _segment_offset;
-	unsigned char _segment_length;
+	struct Transition4Pack
+	{
+		char _transition_0 : 2;
+		char _transition_1 : 2;
+		char _transition_2 : 2;
+		char _transition_3 : 2;
+	};
+	Transition4Pack _transition_vec[64];
 
 public:
-	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
+	const unsigned int transition(const unsigned char *motif_position, unsigned int state_id) const
 	{
-		return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
+		unsigned char byte = byte_value(motif_position);
+		unsigned int div = byte / 4;
+		unsigned int mod = byte % 4;
+		Transition4Pack transition_4pack = _transition_vec[div];
+		switch(mod)
+		{
+		case 0:
+			return state_id + transition_4pack._transition_0;
+		case 1:
+			return state_id + transition_4pack._transition_1;
+		case 2:
+			return state_id + transition_4pack._transition_2;
+		default:
+			return state_id + transition_4pack._transition_3;
+		};
 	};
 };
 
-#endif //B2SPSegmentMatch___HPP
+
+#endif //B2SP2BitState___HPP
 

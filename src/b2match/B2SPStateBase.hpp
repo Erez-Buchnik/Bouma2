@@ -24,25 +24,18 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2SPSegmentMatch___HPP
-#define B2SPSegmentMatch___HPP
+#ifndef B2SPStateBase___HPP
+#define B2SPStateBase___HPP
 
 
-#include "B2SPSegmentPile.hpp"
-
-
-class B2SPSegmentMatch
+class B2SPStateBase
 {
-	char _relative_offset;
-	unsigned char _segment_offset;
-	unsigned char _segment_length;
+	int _relative_offset : 8;
 
-public:
-	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
-	{
-		return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
-	};
+protected:
+	const unsigned char byte_value(const unsigned char *motif_position) const { return *(motif_position + _relative_offset); };
 };
 
-#endif //B2SPSegmentMatch___HPP
+
+#endif //B2SPStateBase___HPP
 

@@ -24,25 +24,40 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2SPSegmentMatch___HPP
-#define B2SPSegmentMatch___HPP
+#ifndef B2SP4BitState___HPP
+#define B2SP4BitState___HPP
 
 
-#include "B2SPSegmentPile.hpp"
+#include "B2SPStateBase.hpp"
 
 
-class B2SPSegmentMatch
+class B2SP4BitState : public B2SPStateBase
 {
-	char _relative_offset;
-	unsigned char _segment_offset;
-	unsigned char _segment_length;
+	struct Transition2Pack
+	{
+		char _transition_0 : 4;
+		char _transition_1 : 4;
+	};
+	Transition2Pack _transition_vec[128];
 
 public:
-	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
+	const unsigned int transition(const unsigned char *motif_position, unsigned int state_id) const
 	{
-		return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
+		unsigned char byte = byte_value(motif_position);
+		unsigned int div = byte / 2;
+		unsigned int mod = byte % 2;
+		Transition2Pack transition_2pack = _transition_vec[div];
+		if(mod == 0)
+		{
+			return state_id + transition_2pack._transition_0;
+		}
+		else
+		{
+			return state_id + transition_2pack._transition_1;
+		};
 	};
 };
 
-#endif //B2SPSegmentMatch___HPP
+
+#endif //B2SP4BitState___HPP
 

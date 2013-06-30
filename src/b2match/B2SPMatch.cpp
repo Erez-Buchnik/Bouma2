@@ -24,25 +24,43 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2SPSegmentMatch___HPP
-#define B2SPSegmentMatch___HPP
+
+#include "B2SPMatch.hpp"
+#include "B2SP2BitState.hpp"
+#include "B2SP4BitState.hpp"
+#include "B2SP8BitState.hpp"
+#include "B2SP16BitState.hpp"
 
 
-#include "B2SPSegmentPile.hpp"
-
-
-class B2SPSegmentMatch
+void B2SPMatchBase::match(unsigned int *&match_list, const unsigned char *motif_position) const
 {
-	char _relative_offset;
-	unsigned char _segment_offset;
-	unsigned char _segment_length;
-
-public:
-	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
+	switch(_transition_width)
 	{
-		return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
+	case B2SP_SINGLE_TERMINAL:
+		if(_terminals_count == 1)
+		{
+			match_single_terminal(match_list, motif_position);
+			return;
+		}
+		else
+		{
+			break;
+		};
+	case B2SP_2BIT_TRANSITION:
+		((B2SPMatch<B2SP2BitState> &)(*this)).match(match_list, motif_position);
+		return;
+	case B2SP_4BIT_TRANSITION:
+		((B2SPMatch<B2SP4BitState> &)(*this)).match(match_list, motif_position);
+		return;
+	case B2SP_8BIT_TRANSITION:
+		((B2SPMatch<B2SP8BitState> &)(*this)).match(match_list, motif_position);
+		return;
+	case B2SP_16BIT_TRANSITION:
+		((B2SPMatch<B2SP16BitState> &)(*this)).match(match_list, motif_position);
+		return;
+	default:
+		break;
 	};
+	//THROW
 };
-
-#endif //B2SPSegmentMatch___HPP
 
