@@ -45,6 +45,12 @@
     <ClInclude Include="..\..\..\src\b2match\B2SP16BitState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\b2match\B2FP1BitMotifMap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\b2match\B2FPMatch.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\b2match\B2SPMatch.cpp">

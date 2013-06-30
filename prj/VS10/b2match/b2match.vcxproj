@@ -75,6 +75,8 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\b2match\B2FP1BitMotifMap.hpp" />
+    <ClInclude Include="..\..\..\src\b2match\B2FPMatch.hpp" />
     <ClInclude Include="..\..\..\src\b2match\B2SP16BitState.hpp" />
     <ClInclude Include="..\..\..\src\b2match\B2SP2BitState.hpp" />
     <ClInclude Include="..\..\..\src\b2match\B2SP4BitState.hpp" />
