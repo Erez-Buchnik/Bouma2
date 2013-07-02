@@ -119,7 +119,7 @@ double B2MangledTrie::full_coverage_score(const std::vector<int> &offsets_vec, i
 			B2MgTByteChoicesMap &choices_map = find_it->second;
 			if(_aggregate_purge_map.size() > 0)
 			{
-				std::hash_map<unsigned char, unsigned int> valid_bytes;
+				B2HashMap<unsigned char, unsigned int> valid_bytes;
 				get_valid_bytes(*offset_it, valid_bytes);
 				choices_map.clean_purged(_aggregate_purge_map, valid_bytes);
 			};
@@ -155,8 +155,8 @@ double B2MangledTrie::partial_coverage_score(const std::vector<int> &offsets_vec
 	double score = 0;
 	double best_score = 0;
 	double prev_coverage = 0;
-	double coverage_purge_factor = b2_preproc_config(B2_COVERAGE_PURGE_FACTOR);
-	double diversity_purge_factor = b2_preproc_config(B2_DIVERSITY_PURGE_FACTOR);
+	double coverage_purge_factor = b2_preproc_config(B2_CFG_COVERAGE_PURGE_FACTOR);
+	double diversity_purge_factor = b2_preproc_config(B2_CFG_DIVERSITY_PURGE_FACTOR);
 	for(std::vector<int>::const_iterator offset_it = offsets_vec.begin(); offset_it != offsets_vec.end(); ++offset_it)
 	{
 		B2MgTOffsetMap::iterator find_it = _offset_map.find(*offset_it);
@@ -165,7 +165,7 @@ double B2MangledTrie::partial_coverage_score(const std::vector<int> &offsets_vec
 			B2MgTByteChoicesMap &choices_map = find_it->second;
 			if(_aggregate_purge_map.size() > 0)
 			{
-				std::hash_map<unsigned char, unsigned int> valid_bytes;
+				B2HashMap<unsigned char, unsigned int> valid_bytes;
 				get_valid_bytes(*offset_it, valid_bytes);
 				choices_map.clean_purged(_aggregate_purge_map, valid_bytes);
 			};
@@ -324,7 +324,7 @@ unsigned int B2MangledTrie::build()
 };
 
 
-void B2MangledTrie::get_valid_bytes(int offset, std::hash_map<unsigned char, unsigned int> &valid_bytes) const
+void B2MangledTrie::get_valid_bytes(int offset, B2HashMap<unsigned char, unsigned int> &valid_bytes) const
 {
 	valid_bytes.clear();
 	for(const_iterator str_inst_it = begin(); str_inst_it != end(); ++str_inst_it)
@@ -344,11 +344,11 @@ unsigned int B2MangledTrie::purge(int offset)
 	{
 		B2MgTState &mgt_state = _mgt_state_machine->new_state(offset);
 		const B2MgTByteChoicesMap &byte_choices_map = find_it->second;
-		std::hash_map<unsigned char, unsigned int> valid_bytes;
+		B2HashMap<unsigned char, unsigned int> valid_bytes;
 		get_valid_bytes(offset, valid_bytes);
 		for(B2MgTByteChoicesMap::const_iterator byte_it = byte_choices_map.begin(); byte_it != byte_choices_map.end(); ++byte_it)
 		{
-			std::hash_map<unsigned char, unsigned int>::const_iterator find_it = valid_bytes.find(byte_it->first);
+			B2HashMap<unsigned char, unsigned int>::const_iterator find_it = valid_bytes.find(byte_it->first);
 			if(find_it != valid_bytes.end())
 			{
 				const B2MgTStrPurgeMap &byte_purge_map = byte_it->second;

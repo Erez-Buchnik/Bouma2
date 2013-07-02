@@ -33,11 +33,11 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
 {
 	// Text default config:
-	_argv[B2_STR_SET_FILE] = "str_set.txt";
-	_argv[B2_GLPK_DEBUG_FILE] = "B2-ILP.txt";
+	_argv[B2_CFG_STR_SET_FILE] = "str_set.txt";
+	_argv[B2_CFG_GLPK_DEBUG_FILE] = "B2-ILP.txt";
 	// Number default config:
-	_argv[B2_COVERAGE_PURGE_FACTOR] = "0.1";
-	_argv[B2_DIVERSITY_PURGE_FACTOR] = "0.9";
+	_argv[B2_CFG_COVERAGE_PURGE_FACTOR] = "0.1";
+	_argv[B2_CFG_DIVERSITY_PURGE_FACTOR] = "0.9";
 	// Message default config:
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_UNSPECIFIED] = "Preproc ERROR: Unspecified Error";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_BAD_TRACE_SET] = "Preproc ERROR: Bad Trace-Set";

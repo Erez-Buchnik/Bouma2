@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 {
 	preproc_config = new B2PreprocConfig(argc, (const char **)argv);
 	preproc_diagnostics = new B2PreprocDiagnostics;
-	b2_test(preproc_config->txt(B2_STR_SET_FILE).c_str());
+	b2_test(preproc_config->txt(B2_CFG_STR_SET_FILE).c_str());
 	printf("\n%s\n", preproc_diagnostics->dump().c_str());
 	exit(0);
 };

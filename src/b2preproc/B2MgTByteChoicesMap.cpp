@@ -57,11 +57,11 @@ void B2MgTByteChoicesMap::add_str_instance(unsigned int total_str_instance_count
 };
 
 
-void B2MgTByteChoicesMap::clean_purged(const B2MgTStrPurgeMap &purge_map, const std::hash_map<unsigned char, unsigned int> &valid_bytes)
+void B2MgTByteChoicesMap::clean_purged(const B2MgTStrPurgeMap &purge_map, const B2HashMap<unsigned char, unsigned int> &valid_bytes)
 {
 	for(iterator byte_it = begin(); byte_it != end(); )
 	{
-		std::hash_map<unsigned char, unsigned int>::const_iterator find_it = valid_bytes.find(byte_it->first);
+		B2HashMap<unsigned char, unsigned int>::const_iterator find_it = valid_bytes.find(byte_it->first);
 		if(find_it != valid_bytes.end())
 		{
 			B2MgTStrPurgeMap &byte_purge_map = byte_it->second;

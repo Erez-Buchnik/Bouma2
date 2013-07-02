@@ -59,7 +59,7 @@ public:
 	double full_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
 	double partial_coverage_score(const std::vector<int> &offsets_vec, int &best_offset);
 	int select_purge_offset();
-	void get_valid_bytes(int offset, std::hash_map<unsigned char, unsigned int> &valid_bytes) const;
+	void get_valid_bytes(int offset, B2HashMap<unsigned char, unsigned int> &valid_bytes) const;
 	unsigned int purge(int offset);
 	const B2MgTStateMachine &state_machine() const { return *_mgt_state_machine; };
 	unsigned int build_pivot();

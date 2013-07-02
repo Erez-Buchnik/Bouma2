@@ -29,8 +29,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #define B2PreprocDiagnostics___HPP
 
 
-#include <string>
-#include <hash_map>
+#include "B2PreprocDefs.hpp"
 
 enum B2PreprocErrorCounterId
 {
@@ -66,14 +65,14 @@ enum B2PreprocDiagCounterId
 
 class B2PreprocDiagnostics
 {
-	std::hash_map<unsigned int, unsigned int> _counters;
+	B2HashMap<unsigned int, unsigned int> _counters;
 
 public:
 	const unsigned int increment(B2PreprocErrorCounterId id) { return (++_counters[id]); };
 	const unsigned int increment(B2PreprocDiagCounterId id) { return (++_counters[id]); };
 	const unsigned int counter(B2PreprocErrorCounterId id) const
 	{
-		std::hash_map<unsigned int, unsigned int>::const_iterator find_it = _counters.find(id);
+		B2HashMap<unsigned int, unsigned int>::const_iterator find_it = _counters.find(id);
 		if(find_it != _counters.end())
 		{
 			return find_it->second;

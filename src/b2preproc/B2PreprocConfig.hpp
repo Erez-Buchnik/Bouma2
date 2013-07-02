@@ -29,21 +29,20 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #define B2PreprocConfig___HPP
 
 
-#include <string>
-#include <hash_map>
+#include "B2PreprocDefs.hpp"
 
 enum B2PreprocConfigTxtId
 {
-	B2_STR_SET_FILE = 1,
-	B2_GLPK_DEBUG_FILE,
+	B2_CFG_STR_SET_FILE = 1,
+	B2_CFG_GLPK_DEBUG_FILE,
 	///////////////
 	B2_CONFIG_TXT_COUNT
 };
 
 enum B2PreprocConfigNumId
 {
-	B2_COVERAGE_PURGE_FACTOR = B2_CONFIG_TXT_COUNT,
-	B2_DIVERSITY_PURGE_FACTOR,
+	B2_CFG_COVERAGE_PURGE_FACTOR = B2_CONFIG_TXT_COUNT,
+	B2_CFG_DIVERSITY_PURGE_FACTOR,
 	///////////////
 	B2_CONFIG_NUM_COUNT
 };
@@ -56,7 +55,7 @@ enum B2PreprocConfigMsgId
 
 class B2PreprocConfig
 {
-	std::hash_map<unsigned int, std::string> _argv;
+	B2HashMap<unsigned int, std::string> _argv;
 
 public:
 	B2PreprocConfig(const int argc, const char **argv);

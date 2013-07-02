@@ -37,10 +37,9 @@ class B2MgTTerminalBase : public B2HashMap<int, std::string>
 {
 
 protected:
-	unsigned int _fallback_transition;
-
 	unsigned int _str_id;
 	int _relative_offset;
+	unsigned int _fallback_transition;
 
 	B2MgTTerminalBase(unsigned int str_id = 0, int relative_offset = 0) : 
 		_str_id(str_id), _relative_offset(relative_offset), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };

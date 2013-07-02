@@ -33,7 +33,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 std::string B2PreprocDiagnostics::dump() const
 {
 	std::stringstream str_strm;
-	for(std::hash_map<unsigned int, unsigned int>::const_iterator counter_it = _counters.begin(); counter_it != _counters.end(); ++counter_it)
+	for(B2HashMap<unsigned int, unsigned int>::const_iterator counter_it = _counters.begin(); counter_it != _counters.end(); ++counter_it)
 	{
 		str_strm << b2_preproc_msg(counter_it->first) << ": " << counter_it->second << std::endl;
 	};
