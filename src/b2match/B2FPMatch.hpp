@@ -33,8 +33,16 @@ template <class MotifMapType> class B2FPMatch
 {
 	MotifMapType _motif_map;
 
-	void match_8(unsigned short **match_list, unsigned short *subject) const
+	void match_32(unsigned short **match_list, unsigned short *subject) const
 	{
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
+		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
 		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
 		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
 		*match_list = subject; match_list += _motif_map.match(*subject); ++subject;
