@@ -37,12 +37,13 @@ class B2MgTTerminalBase : public B2HashMap<int, std::string>
 {
 
 protected:
+	unsigned int _str_instance_id;
 	unsigned int _str_id;
 	int _relative_offset;
 	unsigned int _fallback_transition;
 
-	B2MgTTerminalBase(unsigned int str_id = 0, int relative_offset = 0) : 
-		_str_id(str_id), _relative_offset(relative_offset), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };
+	B2MgTTerminalBase(unsigned int str_instance_id, unsigned int str_id, int relative_offset) :
+		_str_instance_id(str_instance_id), _str_id(str_id), _relative_offset(relative_offset), _fallback_transition(B2_MGT_STATE_INVALID_ID) { };
 };
 
 class B2MgTTerminal : public B2MgTTerminalBase
@@ -50,13 +51,15 @@ class B2MgTTerminal : public B2MgTTerminalBase
 	unsigned int _id;
 
 public:
-	B2MgTTerminal(unsigned int str_id = 0, int relative_offset = 0, unsigned int id = B2_MGT_STATE_INVALID_ID) : 
-		B2MgTTerminalBase(str_id, relative_offset), _id(id) { };
+	B2MgTTerminal() : B2MgTTerminalBase(0, 0, 0), _id(B2_MGT_STATE_INVALID_ID) { };
+	B2MgTTerminal(unsigned int str_instance_id, unsigned int str_id, int relative_offset, unsigned int id) :
+		B2MgTTerminalBase(str_instance_id, str_id, relative_offset), _id(id) { };
 	void add_fallback_transition(unsigned int next_state_id)
 	{
 		_fallback_transition = next_state_id;
 	};
 	void set_id(unsigned int id) { _id = id; };
+	unsigned int str_instance_id() const { return _str_instance_id; };
 	unsigned int id() const { return _id; };
 	bool operator == (const B2MgTTerminal &other) const { return ((const B2MgTTerminalBase &)*this == (const B2MgTTerminalBase &)other); };
 	void reshuffle(const B2MgTReshuffleMap &reshuffle_map);

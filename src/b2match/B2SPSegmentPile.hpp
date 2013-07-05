@@ -33,10 +33,10 @@ class B2SPSegmentPile
 	unsigned char *_pile;
 
 public:
-	unsigned int match(const unsigned char *subject_ptr, const unsigned int segment_offset, const unsigned int segment_length) const
+	unsigned int match(const unsigned char *subject_ptr, const unsigned int offset_in_pile, const unsigned int length_in_pile) const
 	{
-		unsigned char *segment_ptr = _pile + segment_offset;
-		unsigned char *segment_end = segment_ptr + segment_length;
+		unsigned char *segment_ptr = _pile + offset_in_pile;
+		unsigned char *segment_end = segment_ptr + length_in_pile;
 		while(segment_ptr < segment_end)
 		{
 			if(*segment_ptr != *subject_ptr)

@@ -38,6 +38,8 @@ class B2SPTerminal
 	unsigned char _segment_count;
 
 public:
+	B2SPTerminal(unsigned short str_instance_id, unsigned char first_segment_idx, unsigned char segment_count) :
+		_str_instance_id(str_instance_id), _first_segment_idx(first_segment_idx), _segment_count(segment_count) { };
 	void match(unsigned int *&match_list, const unsigned char *motif_position, const B2SPSegmentMatch *segments_vec, const B2SPSegmentPile &segment_pile) const
 	{
 		unsigned int segments_end = _first_segment_idx + _segment_count;

@@ -34,13 +34,15 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 class B2SPSegmentMatch
 {
 	char _relative_offset;
-	unsigned char _segment_offset;
-	unsigned char _segment_length;
+	unsigned char _offset_in_pile;
+	unsigned char _length_in_pile;
 
 public:
+	B2SPSegmentMatch(char relative_offset, unsigned char offset_in_pile, unsigned char length_in_pile) : 
+		_relative_offset(relative_offset), _offset_in_pile(offset_in_pile), _length_in_pile(length_in_pile) { };
 	unsigned int match(const unsigned char *motif_position, const B2SPSegmentPile &segment_pile) const
 	{
-		return segment_pile.match((motif_position + _relative_offset), _segment_offset, _segment_length);
+		return segment_pile.match((motif_position + _relative_offset), _offset_in_pile, _length_in_pile);
 	};
 };
 

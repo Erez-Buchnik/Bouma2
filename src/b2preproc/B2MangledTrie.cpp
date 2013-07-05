@@ -35,7 +35,7 @@ void B2MangledTrie::init_single_str_trie(const B2StrSet &str_set, const B2TraceS
 	B2StrSet::const_iterator find_it = str_set.find(trace_struct.str());
 	if(find_it != str_set.end())
 	{
-		B2MgTStrInstance str_instance(find_it->second.id(), trace_struct);
+		B2MgTStrInstance str_instance(0, find_it->second.id(), trace_struct);
 		(*this)[0] = str_instance;
 	}
 	else
@@ -54,7 +54,7 @@ B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceS
 			B2StrSet::const_iterator find_it = str_set.find(trace_it->str());
 			if(find_it != str_set.end())
 			{
-				B2MgTStrInstance str_instance(find_it->second.id(), *trace_it);
+				B2MgTStrInstance str_instance(str_instance_id, find_it->second.id(), *trace_it);
 				const unsigned char *bytes = (unsigned char *)(str_instance.c_str());
 				int leftmost_offset = str_instance.relative_offset();
 				if(_trie_leftmost_offset > leftmost_offset)

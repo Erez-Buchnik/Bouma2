@@ -29,7 +29,8 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MgTStrInstance.hpp"
 
 
-B2MgTStrInstance::B2MgTStrInstance(unsigned int str_id, const B2TraceStruct &trace) : _str_id(str_id), _purge_mask(trace.str().size(), '+'), _relative_offset(-(int)trace.offset())
+B2MgTStrInstance::B2MgTStrInstance(unsigned int str_instance_id, unsigned int str_id, const B2TraceStruct &trace) :
+	_str_instance_id(str_instance_id), _str_id(str_id), _purge_mask(trace.str().size(), '+'), _relative_offset(-(int)trace.offset())
 {
 	(std::string &)(*this) = trace.str();
 	_purge_mask[trace.offset()] = '.';

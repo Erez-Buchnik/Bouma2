@@ -33,13 +33,15 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 class B2MgTStrInstance : public std::string
 {
+	unsigned int _str_instance_id;
 	unsigned int _str_id;
 	std::string _purge_mask;
 	int _relative_offset;
 
 public:
 	B2MgTStrInstance() : _relative_offset(0) { };
-	B2MgTStrInstance(unsigned int str_id, const B2TraceStruct &trace);
+	B2MgTStrInstance(unsigned int str_instance_id, unsigned int str_id, const B2TraceStruct &trace);
+	unsigned int str_instance_id() const { return _str_instance_id; };
 	unsigned int str_id() const { return _str_id; };
 	unsigned char byte(int offset) const { return (*this)[offset - _relative_offset]; };
 	bool offset_within_range(int offset) const { return ((offset >= _relative_offset) && (offset < (_relative_offset + (int)size()))); };

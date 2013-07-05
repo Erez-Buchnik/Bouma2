@@ -39,7 +39,7 @@ B2MgTState &B2MgTStateMachine::new_state(int relative_offset)
 
 const B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str_instance)
 {
-	B2MgTTerminal terminal(str_instance.str_id(), str_instance.relative_offset(), _node_count);
+	B2MgTTerminal terminal(str_instance.str_instance_id(), str_instance.str_id(), str_instance.relative_offset(), _node_count);
 	std::string segment;
 	for(int offset = str_instance.next_segment(segment); 
 		offset < str_instance.relative_end_offset(); 

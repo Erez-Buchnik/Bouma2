@@ -32,29 +32,22 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MgTTerminal.hpp"
 #include "B2SPTerminal.hpp"
 #include "B2SPSegmentMatch.hpp"
+#include <algorithm>
 
 
 class B2TerminalAssembler
 {
-	B2HashMap<unsigned int, B2MgTTerminal> _terminals;
-
-	struct SegmentSpecifier
-	{
-		unsigned int _terminal_id;
-		int _segment_relative_offset;
-		unsigned int _segment_length;
-	};
-
-	std::vector<SegmentSpecifier> _piling_sequence;
+	const B2HashMap<unsigned int, B2MgTTerminal> &_mgt_terminals;
 
 	std::vector<B2SPTerminal> _terminals_vec;
-	std::vector<B2SPSegmentMatch> _segments_vec;
+	B2HashMap<unsigned int, std::vector<B2SPSegmentMatch> > _segment_vecs;
 	std::string _segment_pile;
 
-	void add_to_pile(const SegmentSpecifier &segment_specifier);
+	void create_pile();
+	void create_terminals_vec();
 
 public:
-	B2TerminalAssembler(const B2HashMap<unsigned int, B2MgTTerminal> &terminals) : _terminals(terminals) { };
+	B2TerminalAssembler(const B2HashMap<unsigned int, B2MgTTerminal> &mgt_terminals) : _mgt_terminals(mgt_terminals) { };
 	void assemble();
 };
 
