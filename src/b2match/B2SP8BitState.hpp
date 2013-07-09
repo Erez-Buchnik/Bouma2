@@ -36,6 +36,12 @@ class B2SP8BitState : public B2SPStateBase
 	char _transition_vec[256];
 
 public:
+	int set(unsigned int byte, unsigned int state_id, unsigned int next_node)
+	{
+		int transition = (int)next_node - (int)state_id;
+		_transition_vec[byte] = transition;
+		return transition;
+	};
 	const unsigned int transition(const unsigned char *motif_position, unsigned int state_id) const
 	{
 		return state_id + _transition_vec[byte_value(motif_position)];

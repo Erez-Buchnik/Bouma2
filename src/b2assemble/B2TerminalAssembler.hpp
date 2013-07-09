@@ -32,7 +32,6 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MgTTerminal.hpp"
 #include "B2SPTerminal.hpp"
 #include "B2SPSegmentMatch.hpp"
-#include <algorithm>
 
 
 class B2TerminalAssembler

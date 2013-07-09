@@ -43,6 +43,25 @@ class B2SP2BitState : public B2SPStateBase
 	Transition4Pack _transition_vec[64];
 
 public:
+	int set(unsigned int byte, unsigned int state_id, unsigned int next_node)
+	{
+		unsigned int div = byte / 4;
+		unsigned int mod = byte % 4;
+		Transition4Pack &transition_4pack = _transition_vec[div];
+		int transition = (int)next_node - (int)state_id;
+		switch(mod)
+		{
+		case 0:
+			transition_4pack._transition_0 = transition;
+		case 1:
+			transition_4pack._transition_1 = transition;
+		case 2:
+			transition_4pack._transition_2 = transition;
+		default:
+			transition_4pack._transition_3 = transition;
+		};
+		return transition;
+	};
 	const unsigned int transition(const unsigned char *motif_position, unsigned int state_id) const
 	{
 		unsigned char byte = byte_value(motif_position);
