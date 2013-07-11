@@ -34,20 +34,19 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 enum B2SPTransitionWidth
 {
-	B2SP_SINGLE_TERMINAL = 0,
-	B2SP_2BIT_TRANSITION = 1,
-	B2SP_4BIT_TRANSITION = 3,
-	B2SP_8BIT_TRANSITION = 7,
-	B2SP_16BIT_TRANSITION = 15,
+	B2SP_2BIT_TRANSITION = 0,
+	B2SP_4BIT_TRANSITION,
+	B2SP_8BIT_TRANSITION,
+	B2SP_16BIT_TRANSITION
 };
 
 class B2SPMatchBase
 {
 
 protected:
-	unsigned int _transition_width : 4;
-	unsigned int _segments_count : 6;
-	unsigned int _terminals_count : 6;
+	unsigned int _transition_width : 2;
+	unsigned int _segments_count : 7;
+	unsigned int _terminals_count : 7;
 	unsigned int _states_count : 16;
 
 	void match(unsigned int *&match_list, const unsigned char *motif_position) const;
@@ -69,6 +68,8 @@ template <class StateType> class B2SPMatch : public B2SPMatchBase
 public:
 	const StateType *states_vec() const { return (StateType *)(this + 1); };
 	const B2SPTerminal *terminals_vec(const StateType *states_vec) const { return (B2SPTerminal *)(states_vec + _states_count); };
+	StateType *states_vec() { return (StateType *)(this + 1); };
+	B2SPTerminal *terminals_vec(const StateType *states_vec) { return (B2SPTerminal *)(states_vec + _states_count); };
 	void match(unsigned int *&match_list, const unsigned char *motif_position) const
 	{
 		const StateType *states = states_vec();
@@ -86,6 +87,10 @@ public:
 			terminals[terminal_id].match(match_list, motif_position, segments, *seg_pile);
 		};
 	};
+
+	void* operator new(size_t size, void *ptr) { return ptr; };
+	void operator delete(void *inst, void *ptr) { };
+
 };
 
 #endif //B2SPMatch___HPP

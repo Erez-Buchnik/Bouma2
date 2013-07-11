@@ -34,11 +34,14 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2SP4BitState.hpp"
 #include "B2SP8BitState.hpp"
 #include "B2SP16BitState.hpp"
+#include "B2SPMatch.hpp"
 
 
 class B2StateAssembler
 {
 	const B2MgTStateMachine &_mgt_state_machine;
+	unsigned int _state_count;
+	B2SPTransitionWidth _transition_width;
 
 	std::vector<B2SP2BitState> _2bit_states_vec;
 	std::vector<B2SP4BitState> _4bit_states_vec;
@@ -65,8 +68,21 @@ class B2StateAssembler
 	void fill();
 
 public:
-	B2StateAssembler(const B2MgTStateMachine &mgt_state_machine) : _mgt_state_machine(mgt_state_machine) { };
-	void assemble();
+	unsigned int state_count() const { return _state_count; };
+	B2SPTransitionWidth transition_width() const { return _transition_width; };
+
+	unsigned int size() const
+	{
+		unsigned int retval = _2bit_states_vec.size() * sizeof(B2SP2BitState);
+		retval += _4bit_states_vec.size() * sizeof(B2SP4BitState);
+		retval += _8bit_states_vec.size() * sizeof(B2SP8BitState);
+		retval += _16bit_states_vec.size() * sizeof(B2SP16BitState);
+		return retval;
+	};
+
+	B2StateAssembler(const B2MgTStateMachine &mgt_state_machine) :
+		_mgt_state_machine(mgt_state_machine), _state_count(0), _transition_width(B2SP_2BIT_TRANSITION) { };
+	template <class StateType> void assemble(StateType *states_vec);
 };
 
 

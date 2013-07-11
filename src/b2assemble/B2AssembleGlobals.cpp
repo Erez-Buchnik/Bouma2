@@ -25,39 +25,26 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2TerminalAssembler___HPP
-#define B2TerminalAssembler___HPP
+#include "B2AssembleConfig.hpp"
+#include "B2AssembleDiagnostics.hpp"
 
 
-#include "B2MgTTerminal.hpp"
-#include "B2SPTerminal.hpp"
-#include "B2SPSegmentMatch.hpp"
+#ifndef B2_OVERRIDE_GLOBALS
+
+B2AssembleConfig *assemble_config = NULL;
+B2AssembleDiagnostics *assemble_diagnostics = NULL;
 
 
-class B2TerminalAssembler
-{
-	const B2HashMap<unsigned int, B2MgTTerminal> &_mgt_terminals;
-
-	std::vector<B2SPTerminal> _terminals_vec;
-	B2HashMap<unsigned int, std::vector<B2SPSegmentMatch> > _segment_vecs;
-	std::string _segment_pile;
-
-	void create_pile();
-	void create_terminals_vec();
-
-public:
-	unsigned int size() const
-	{
-		unsigned int retval = _terminals_vec.size() * sizeof(B2SPTerminal);
-		retval += _segment_vecs.size() * sizeof(B2SPSegmentMatch);
-		retval += _segment_pile.size();
-		return retval;
-	};
-
-	B2TerminalAssembler(const B2HashMap<unsigned int, B2MgTTerminal> &mgt_terminals) : _mgt_terminals(mgt_terminals) { };
-	void assemble(B2SPTerminal *terminals_vec);
-};
+const std::string b2_assemble_config(B2AssembleConfigTxtId id) { return assemble_config->txt(id); };
+const double b2_assemble_config(B2AssembleConfigNumId id) { return assemble_config->num(id); };
+const std::string b2_assemble_msg(unsigned int id) { return assemble_config->msg(id); };
+void *b2_assemble_malloc(size_t size) { b2_assemble_diagnostic_inc(B2_ASSEMBLE_DIAG_TOTAL_MEMORY, size); return malloc(size); };
+void b2_assemble_free(void *ptr) { free(ptr); };;
 
 
-#endif //B2TerminalAssembler___HPP
+const unsigned int b2_assemble_error_inc(B2AssembleErrorCounterId id, unsigned int delta) { return assemble_diagnostics->increment(id, delta); };
+const unsigned int b2_assemble_diagnostic_inc(B2AssembleDiagCounterId id, unsigned int delta) { return assemble_diagnostics->increment(id, delta); };
+
+
+#endif //B2_OVERRIDE_GLOBALS
 

@@ -30,9 +30,11 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 void B2StateAssembler::fill()
 {
+	_state_count = _mgt_state_machine.size();
 	unsigned int longest_transition = _mgt_state_machine.longest_transition();
 	if(longest_transition < 4)
 	{
+		_transition_width = B2SP_2BIT_TRANSITION;
 		for(B2MgTStateMachine::const_iterator state_it = _mgt_state_machine.begin(); state_it != _mgt_state_machine.end(); ++state_it)
 		{
 			fill_state<B2SP2BitState>(state_it->second, _2bit_states_vec);
@@ -40,6 +42,7 @@ void B2StateAssembler::fill()
 	}
 	else if(longest_transition < 16)
 	{
+		_transition_width = B2SP_4BIT_TRANSITION;
 		for(B2MgTStateMachine::const_iterator state_it = _mgt_state_machine.begin(); state_it != _mgt_state_machine.end(); ++state_it)
 		{
 			fill_state<B2SP4BitState>(state_it->second, _4bit_states_vec);
@@ -47,6 +50,7 @@ void B2StateAssembler::fill()
 	}
 	else if(longest_transition < 256)
 	{
+		_transition_width = B2SP_8BIT_TRANSITION;
 		for(B2MgTStateMachine::const_iterator state_it = _mgt_state_machine.begin(); state_it != _mgt_state_machine.end(); ++state_it)
 		{
 			fill_state<B2SP8BitState>(state_it->second, _8bit_states_vec);
@@ -54,6 +58,7 @@ void B2StateAssembler::fill()
 	}
 	else
 	{
+		_transition_width = B2SP_16BIT_TRANSITION;
 		for(B2MgTStateMachine::const_iterator state_it = _mgt_state_machine.begin(); state_it != _mgt_state_machine.end(); ++state_it)
 		{
 			fill_state<B2SP16BitState>(state_it->second, _16bit_states_vec);

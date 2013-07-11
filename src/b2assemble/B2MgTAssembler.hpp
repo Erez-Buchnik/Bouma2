@@ -1,3 +1,4 @@
+
 /***********************************************************
 
 Bouma2 - A Multiple String Match Algorithm
@@ -24,38 +25,36 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-
-#include "B2SPMatch.hpp"
-#include "B2SP2BitState.hpp"
-#include "B2SP4BitState.hpp"
-#include "B2SP8BitState.hpp"
-#include "B2SP16BitState.hpp"
+#ifndef B2MgTAssembler___HPP
+#define B2MgTAssembler___HPP
 
 
-void B2SPMatchBase::match(unsigned int *&match_list, const unsigned char *motif_position) const
+#include "B2StateAssembler.hpp"
+#include "B2TerminalAssembler.hpp"
+#include "B2AssembleConfig.hpp"
+
+
+class B2MgTAssembler
 {
-	if(_states_count > 0)
+	B2StateAssembler _state_assembler;
+	B2TerminalAssembler _terminal_assembler;
+
+	template <class StateType> B2SPMatch<StateType> *assemble(unsigned int mgt_size)
 	{
-		switch(_transition_width)
-		{
-		case B2SP_2BIT_TRANSITION:
-			((B2SPMatch<B2SP2BitState> &)(*this)).match(match_list, motif_position);
-			return;
-		case B2SP_4BIT_TRANSITION:
-			((B2SPMatch<B2SP4BitState> &)(*this)).match(match_list, motif_position);
-			return;
-		case B2SP_8BIT_TRANSITION:
-			((B2SPMatch<B2SP8BitState> &)(*this)).match(match_list, motif_position);
-			return;
-		case B2SP_16BIT_TRANSITION:
-		default:
-			((B2SPMatch<B2SP16BitState> &)(*this)).match(match_list, motif_position);
-			return;
-		};
-	}
-	else
-	{
-		match_single_terminal(match_list, motif_position);
+		B2SPMatch<StateType> *sp_match = new(b2_assemble_malloc(mgt_size)) B2SPMatch<StateType>;
+		StateType *states_vec = sp_match->states_vec();
+		_state_assembler.assemble(states_vec);
+		B2SPTerminal *terminals_vec = sp_match->terminals_vec(states_vec);
+		_terminal_assembler.assemble(terminals_vec);
+		return sp_match;
 	};
+
+public:
+	B2MgTAssembler(const B2MgTStateMachine &mgt_state_machine) :
+		_state_assembler(mgt_state_machine), _terminal_assembler(mgt_state_machine.terminals()) { };
+	B2SPMatchBase *assemble();
 };
+
+
+#endif //B2MgTAssembler___HPP
 

@@ -76,9 +76,18 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\b2assemble\B2AssembleConfig.hpp" />
+    <ClInclude Include="..\..\..\src\b2assemble\B2AssembleDiagnostics.hpp" />
+    <ClInclude Include="..\..\..\src\b2assemble\B2MgTAssembler.hpp" />
+    <ClInclude Include="..\..\..\src\b2assemble\B2StateAssembler.hpp" />
     <ClInclude Include="..\..\..\src\b2assemble\B2TerminalAssembler.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\b2assemble\B2AssembleConfig.cpp" />
+    <ClCompile Include="..\..\..\src\b2assemble\B2AssembleDiagnostics.cpp" />
+    <ClCompile Include="..\..\..\src\b2assemble\B2AssembleGlobals.cpp" />
+    <ClCompile Include="..\..\..\src\b2assemble\B2MgTAssembler.cpp" />
+    <ClCompile Include="..\..\..\src\b2assemble\B2StateAssembler.cpp" />
     <ClCompile Include="..\..\..\src\b2assemble\B2TerminalAssembler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

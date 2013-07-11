@@ -1,3 +1,4 @@
+
 /***********************************************************
 
 Bouma2 - A Multiple String Match Algorithm
@@ -24,38 +25,35 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-
-#include "B2SPMatch.hpp"
-#include "B2SP2BitState.hpp"
-#include "B2SP4BitState.hpp"
-#include "B2SP8BitState.hpp"
-#include "B2SP16BitState.hpp"
+#include "B2MgTAssembler.hpp"
 
 
-void B2SPMatchBase::match(unsigned int *&match_list, const unsigned char *motif_position) const
+B2SPMatchBase *B2MgTAssembler::assemble()
 {
-	if(_states_count > 0)
+	B2SPMatchBase *sp_match = NULL;
+	unsigned int mgt_size = _state_assembler.size() + _terminal_assembler.size();
+	if(_state_assembler.state_count() > 0)
 	{
-		switch(_transition_width)
+		switch(_state_assembler.transition_width())
 		{
 		case B2SP_2BIT_TRANSITION:
-			((B2SPMatch<B2SP2BitState> &)(*this)).match(match_list, motif_position);
-			return;
+			sp_match = assemble<B2SP2BitState>(mgt_size);
+			break;
 		case B2SP_4BIT_TRANSITION:
-			((B2SPMatch<B2SP4BitState> &)(*this)).match(match_list, motif_position);
-			return;
+			sp_match = assemble<B2SP4BitState>(mgt_size);
+			break;
 		case B2SP_8BIT_TRANSITION:
-			((B2SPMatch<B2SP8BitState> &)(*this)).match(match_list, motif_position);
-			return;
+			sp_match = assemble<B2SP8BitState>(mgt_size);
+			break;
 		case B2SP_16BIT_TRANSITION:
 		default:
-			((B2SPMatch<B2SP16BitState> &)(*this)).match(match_list, motif_position);
-			return;
+			sp_match = assemble<B2SP16BitState>(mgt_size);
+			break;
 		};
 	}
 	else
 	{
-		match_single_terminal(match_list, motif_position);
 	};
+	return sp_match;
 };
 
