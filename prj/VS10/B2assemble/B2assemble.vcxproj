@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\b2assemble\B2AssembleConfig.hpp" />
     <ClInclude Include="..\..\..\src\b2assemble\B2AssembleDiagnostics.hpp" />
+    <ClInclude Include="..\..\..\src\b2assemble\B2Assembler.hpp" />
     <ClInclude Include="..\..\..\src\b2assemble\B2MgTAssembler.hpp" />
     <ClInclude Include="..\..\..\src\b2assemble\B2StateAssembler.hpp" />
     <ClInclude Include="..\..\..\src\b2assemble\B2TerminalAssembler.hpp" />

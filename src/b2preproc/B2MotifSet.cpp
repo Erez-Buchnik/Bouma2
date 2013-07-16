@@ -61,11 +61,12 @@ void B2MotifSet::remove_duplicates(const B2TraceCoeffs &trace_coeffs)
 				{
 					remove_mapping(prev_struct);
 					find_it->second = trace_struct;
+					++struct_it;
 					continue;
 				}
 				else
 				{
-					B2_HASH_MAP_ERASE(traces_vec, struct_it);
+					struct_it = traces_vec.erase(struct_it);
 					continue;
 				};
 			};
