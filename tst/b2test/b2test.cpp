@@ -25,6 +25,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
+#include "B2PreprocApi.h"
 #include "B2Hasher.hpp"
 #include "B2MangledTrie.hpp"
 #include <stdio.h>
@@ -32,18 +33,21 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 void b2_test(const char *strings_file_path)
 {
-	B2StrSet str_set;
+	B2Preprocessor *b2_preprocessor = b2_preproc_create();
+	B2StrSet str_set;////
 	FILE *f_strs = fopen(strings_file_path, "r");
 	unsigned int str_count = 0;
 	char str_bytes[128];
 	while(fgets(str_bytes, 128, f_strs) != NULL)
 	{
-		B2Str str(str_count, (unsigned char *)str_bytes, (strlen(str_bytes) - 1));
-		str_set.add_str(str);
-		printf("str#%d:%s\n", str_count, str.c_str());
+		b2_preproc_add_str(b2_preprocessor, str_count, (unsigned char *)str_bytes, (strlen(str_bytes) - 1));
+		B2Str str(str_count, (unsigned char *)str_bytes, (strlen(str_bytes) - 1));////
+		str_set.add_str(str);////
+		//printf("str#%d:%s\n", str_count, std::string(str_bytes, (strlen(str_bytes) - 1)).c_str());
 		++str_count;
 	};
 	fclose(f_strs);
+	printf("%s\n", b2_preproc_dump_strs(b2_preprocessor));
 	B2TraceCoeffs trace_coeffs;
 	B2Hasher hasher(trace_coeffs, str_set);
 	const B2MotifSet &motif_set = hasher.motif_set();

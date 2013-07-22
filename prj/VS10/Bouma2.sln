@@ -23,11 +23,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "b2test", "b2test\b2test.vcx
 	ProjectSection(ProjectDependencies) = postProject
 		{6CDE9F61-92FF-43DC-BC0C-C715CADDCE7F} = {6CDE9F61-92FF-43DC-BC0C-C715CADDCE7F}
 		{46840A8F-6002-4F0E-AF8E-D5B9C3FA9393} = {46840A8F-6002-4F0E-AF8E-D5B9C3FA9393}
+		{866159EA-3FBC-45B1-9D0D-BEB75542B453} = {866159EA-3FBC-45B1-9D0D-BEB75542B453}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "b2match", "b2match\b2match.vcxproj", "{A61DC633-AEBF-4DFB-9491-5D48DC3E4D33}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "B2assemble", "B2assemble\B2assemble.vcxproj", "{5BFE1F7B-3054-4ABA-89B3-952DEBBC8142}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "b2api", "b2api\b2api.vcxproj", "{866159EA-3FBC-45B1-9D0D-BEB75542B453}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +74,10 @@ Global
 		{5BFE1F7B-3054-4ABA-89B3-952DEBBC8142}.Debug|Win32.Build.0 = Debug|Win32
 		{5BFE1F7B-3054-4ABA-89B3-952DEBBC8142}.Release|Win32.ActiveCfg = Release|Win32
 		{5BFE1F7B-3054-4ABA-89B3-952DEBBC8142}.Release|Win32.Build.0 = Release|Win32
+		{866159EA-3FBC-45B1-9D0D-BEB75542B453}.Debug|Win32.ActiveCfg = Debug|Win32
+		{866159EA-3FBC-45B1-9D0D-BEB75542B453}.Debug|Win32.Build.0 = Debug|Win32
+		{866159EA-3FBC-45B1-9D0D-BEB75542B453}.Release|Win32.ActiveCfg = Release|Win32
+		{866159EA-3FBC-45B1-9D0D-BEB75542B453}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

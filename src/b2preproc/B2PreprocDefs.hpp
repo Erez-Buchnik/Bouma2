@@ -31,6 +31,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #ifdef __GNUC__
 
@@ -66,6 +67,32 @@ namespace __gnu_cxx
 #define B2_HASH_MAP_ERASE(hash_map_inst, iter) { (iter) = (hash_map_inst).erase(iter); };
 
 #endif
+
+
+template < typename HashType > class B2HashSorter : public std::vector<typename HashType::const_iterator>
+{
+
+public:
+
+	B2HashSorter(const HashType &hash)
+	{
+		for(typename HashType::const_iterator it = hash.begin(); it != hash.end(); ++it)
+		{
+			(*this).push_back(it);
+		};
+	};
+
+	struct SortPredicate
+	{
+		bool operator() (typename HashType::const_iterator i, typename HashType::const_iterator j) { return (i->second < j->second); };
+	};
+
+	void sort_by_value()
+	{
+		std::sort(this->begin(), this->end(), SortPredicate());
+	};
+};
+
 
 #define B2_MGT_STATE_INVALID_ID (0xFFFF)
 #define B2_MGT_INVALID_OFFSET (1)
