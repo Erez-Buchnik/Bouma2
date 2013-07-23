@@ -55,8 +55,7 @@ public:
 	B2StrStruct() { };
 	void duplicate_id(const B2Str &str) { _duplicate_ids.push_back(str.id()); };
 	const std::vector<unsigned int> &duplicate_ids_vec() const { return _duplicate_ids; };
-	//bool operator < (const B2StrStruct &other) const { return _id < other._id; };
-	bool operator < (const B2StrStruct &other) const { return (const std::string &)*this < (const std::string &)other; };
+	bool operator < (const B2StrStruct &other) const { return _id < other._id; };
 };
 
 

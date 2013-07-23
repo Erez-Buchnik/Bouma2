@@ -32,10 +32,28 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2MangledTrie.hpp"
 #include <sstream>
 
+typedef struct B2PreprocSMMap : public B2HashMap<B2Trace, B2MgTStateMachine *>
+{
+	~B2PreprocSMMap()
+	{
+		for(B2PreprocSMMap::iterator sm_it = begin(); sm_it != end(); ++sm_it)
+		{
+			B2MgTStateMachine *sm = sm_it->second;
+			if(sm)
+			{
+				delete sm;
+				sm_it->second = NULL;
+			};
+		};
+		clear();
+	};
+} B2PreprocSMMap;
+
 
 typedef struct B2Preprocessor
 {
 	B2StrSet _str_set;
+	B2PreprocSMMap _sm_map;
 } B2Preprocessor;
 
 
@@ -97,6 +115,7 @@ void b2_preproc_execute(B2Preprocessor *preprocessor)
 		B2MangledTrie mangled_trie(preprocessor->_str_set, trace_vec);
 		mangled_trie.build();
 		mangled_trie.reshuffle_state_machine();
+		preprocessor->_sm_map[motif_it->first] = mangled_trie.delegate_state_machine();
 	};
 };
 

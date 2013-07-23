@@ -47,6 +47,7 @@ class B2MangledTrie : public B2HashMap<unsigned int, B2MgTStrInstance>
 	B2MgTStrPurgeMap _aggregate_purge_map;
 
 	B2MgTStateMachine *_mgt_state_machine;
+	B2MgTStateMachine *_delegated_mgt_state_machine;
 
 	double proximity(int offset) const;
 	void apply_purge_map(const B2MgTStrPurgeMap &purge_map);
@@ -65,6 +66,12 @@ public:
 	unsigned int build_pivot();
 	unsigned int build();
 	void reshuffle_state_machine();
+	B2MgTStateMachine *delegate_state_machine()
+	{
+		_delegated_mgt_state_machine = _mgt_state_machine;
+		_mgt_state_machine = NULL;
+		return _delegated_mgt_state_machine;
+	};
 };
 
 #endif //B2MangledTrie___HPP
