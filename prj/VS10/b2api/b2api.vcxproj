@@ -76,9 +76,11 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\b2api\B2AssembleApi.h" />
     <ClInclude Include="..\..\..\src\b2api\B2PreprocApi.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\b2api\B2AssembleApi.cpp" />
     <ClCompile Include="..\..\..\src\b2api\B2PreprocApi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

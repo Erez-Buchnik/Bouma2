@@ -37,7 +37,7 @@ void B2MgTByteChoicesMap::add_str_instance(unsigned int total_str_instance_count
 	}
 	else if(_total_str_instance_count != total_str_instance_count)
 	{
-		b2_preproc_error(B2_PREPROC_ERROR_MGT_BAD_BYTE_CHOICES_MAP);
+		b2_preproc_error_inc(B2_PREPROC_ERROR_MGT_BAD_BYTE_CHOICES_MAP, 1);
 	};
 
 	B2MgTByteChoicesMap::iterator find_it = find(byte);

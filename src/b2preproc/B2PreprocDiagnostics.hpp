@@ -52,6 +52,7 @@ enum B2PreprocErrorCounterId
 enum B2PreprocDiagCounterId
 {
 	B2_PREPROC_DIAG_ADDED_PATTERN_STR = B2_PREPROC_ERRORS,
+	B2_PREPROC_DIAG_ADDED_PATTERN_BYTES,
 	B2_PREPROC_DIAG_ADDED_TRACE_COEFF,
 	B2_PREPROC_DIAG_ADDED_TRANSITIONAL,
 	B2_PREPROC_DIAG_ADDED_PIVOT,
@@ -68,8 +69,8 @@ class B2PreprocDiagnostics
 	B2HashMap<unsigned int, unsigned int> _counters;
 
 public:
-	const unsigned int increment(B2PreprocErrorCounterId id) { return (++_counters[id]); };
-	const unsigned int increment(B2PreprocDiagCounterId id) { return (++_counters[id]); };
+	const unsigned int increment(B2PreprocErrorCounterId id, unsigned int delta) { return (_counters[id] += delta); };
+	const unsigned int increment(B2PreprocDiagCounterId id, unsigned int delta) { return (_counters[id] += delta); };
 	const unsigned int counter(B2PreprocErrorCounterId id) const
 	{
 		B2HashMap<unsigned int, unsigned int>::const_iterator find_it = _counters.find(id);
@@ -85,8 +86,8 @@ public:
 	std::string dump() const;
 };
 
-const unsigned int b2_preproc_error(B2PreprocErrorCounterId id);
-const unsigned int b2_preproc_diagnostic(B2PreprocDiagCounterId id);
+const unsigned int b2_preproc_error_inc(B2PreprocErrorCounterId id, unsigned int delta);
+const unsigned int b2_preproc_diagnostic_inc(B2PreprocDiagCounterId id, unsigned int delta);
 
 
 #endif // B2PreprocDiagnostics___HPP

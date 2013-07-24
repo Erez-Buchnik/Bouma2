@@ -26,6 +26,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 ***********************************************************/
 
 #include "B2PreprocApi.h"
+#include "B2AssembleApi.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -45,6 +46,8 @@ void b2_test(const char *strings_file_path)
 
 	b2_preproc_execute(b2_preprocessor);
 	printf("%s\n", b2_preproc_dump_motifs(b2_preprocessor));
+
+	B2Assembler *b2_assembler = b2_assemble_create(b2_preprocessor);
 };
 
 #include "B2PreprocConfig.hpp"
@@ -56,8 +59,8 @@ const std::string b2_preproc_config(B2PreprocConfigTxtId id) { return preproc_co
 const double b2_preproc_config(B2PreprocConfigNumId id) { return preproc_config->num(id); };
 const std::string b2_preproc_msg(unsigned int id) { return preproc_config->msg(id); };
 
-const unsigned int b2_preproc_error(B2PreprocErrorCounterId id) { return preproc_diagnostics->increment(id); };
-const unsigned int b2_preproc_diagnostic(B2PreprocDiagCounterId id) { return preproc_diagnostics->increment(id); };
+const unsigned int b2_preproc_error_inc(B2PreprocErrorCounterId id, unsigned int delta) { return preproc_diagnostics->increment(id, delta); };
+const unsigned int b2_preproc_diagnostic_inc(B2PreprocDiagCounterId id, unsigned int delta) { return preproc_diagnostics->increment(id, delta); };
 
 int main(int argc, char *argv[])
 {

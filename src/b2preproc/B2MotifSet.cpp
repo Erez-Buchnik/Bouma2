@@ -104,7 +104,7 @@ double B2MotifCoeffs::operator [] (B2Trace trace) const
 	}
 	else
 	{
-		b2_preproc_diagnostic(B2_PREPROC_DIAG_MISSING_COEFF_FOR_MOTIF);
+		b2_preproc_diagnostic_inc(B2_PREPROC_DIAG_MISSING_COEFF_FOR_MOTIF, 1);
 		return 1.0;
 	};
 };

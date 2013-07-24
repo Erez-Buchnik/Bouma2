@@ -57,7 +57,7 @@ std::string B2MgTTerminal::dump() const
 		}
 		else
 		{
-			b2_preproc_error(B2_PREPROC_ERROR_MGT_BAD_TERMINAL);
+			b2_preproc_error_inc(B2_PREPROC_ERROR_MGT_BAD_TERMINAL, 1);
 		};
 	};
 	str_strm << str_out;

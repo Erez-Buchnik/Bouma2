@@ -83,6 +83,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>B2AssembleApi.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2api/B2AssembleApi.cpp</locationURI>
+		</link>
+		<link>
+			<name>B2AssembleApi.h</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2api/B2AssembleApi.h</locationURI>
+		</link>
+		<link>
 			<name>B2PreprocApi.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2api/B2PreprocApi.cpp</locationURI>

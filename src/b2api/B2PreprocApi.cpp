@@ -66,7 +66,10 @@ B2Preprocessor *b2_preproc_create()
 
 void b2_preproc_destroy(B2Preprocessor *preprocessor)
 {
-	delete preprocessor;
+	if(preprocessor)
+	{
+		delete preprocessor;
+	};
 };
 
 

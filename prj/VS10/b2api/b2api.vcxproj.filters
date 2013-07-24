@@ -21,9 +21,15 @@
     <ClInclude Include="..\..\..\src\b2api\B2PreprocApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\b2api\B2AssembleApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\b2api\B2PreprocApi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\b2api\B2AssembleApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

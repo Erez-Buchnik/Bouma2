@@ -32,7 +32,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 B2MgTState &B2MgTStateMachine::new_state(int relative_offset)
 {
 	(*this)[_node_count] = B2MgTState(relative_offset, _node_count);
-	b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_STATE);
+	b2_preproc_diagnostic_inc(B2_PREPROC_DIAG_ADDED_STATE, 1);
 	return (*this)[_node_count++];
 };
 
@@ -56,7 +56,7 @@ const B2MgTTerminal &B2MgTStateMachine::new_terminal(const B2MgTStrInstance &str
 		};
 	};
 	_terminals[_node_count] = terminal;
-	b2_preproc_diagnostic(B2_PREPROC_DIAG_ADDED_TERMINAL);
+	b2_preproc_diagnostic_inc(B2_PREPROC_DIAG_ADDED_TERMINAL, 1);
 	return _terminals[_node_count++];
 };
 

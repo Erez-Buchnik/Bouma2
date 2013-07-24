@@ -25,28 +25,19 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#include "B2StrSet.hpp"
-
-B2Str::B2Str(unsigned int id, unsigned char *bytes, unsigned int length) : std::string((char *)bytes, length), _id(id)
-{
-	if(length < 3)
-	{
-		b2_preproc_error_inc(B2_PREPROC_ERROR_PATTERN_STR_TOO_SHORT, 1);
-	};
-};
+#ifndef B2AssembleApi___H
+#define B2AssembleApi___H
 
 
-void B2StrSet::add_str(const B2Str &str)
-{
-	B2StrSet::iterator find_it = find(str);
-	if(find_it == end())
-	{
-		(*this)[str] = B2StrStruct(str);
-		b2_preproc_diagnostic_inc(B2_PREPROC_DIAG_ADDED_PATTERN_STR, 1);
-		b2_preproc_diagnostic_inc(B2_PREPROC_DIAG_ADDED_PATTERN_BYTES, str.size());
-	}
-	else
-	{
-		find_it->second.duplicate_id(str);
-	};
-};
+#include "B2PreprocApi.h"
+
+
+struct B2Assembler;
+
+B2Assembler *b2_assemble_create(const B2Preprocessor *preprocessor);
+void b2_assemble_destroy(B2Assembler *assembler);
+
+void b2_assemble_execute(B2Assembler *assembler);
+
+#endif //B2AssembleApi___H
+

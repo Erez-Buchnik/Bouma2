@@ -54,6 +54,7 @@ B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
 	_argv[B2_MSG_CONFIG + B2_PREPROC_ERROR_TRACE_OFFSET_OUT_OF_RANGE] = "Preproc ERROR: Trace-Offset is Out of Range";
 	//////////////////////
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_PATTERN_STR] = "Preprocessing: Added Pattern-String";
+	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_PATTERN_BYTES] = "Preprocessing: Added Pattern-String bytes";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_TRACE_COEFF] = "Preprocessing: Added Trace Coefficient";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_TRANSITIONAL] = "Preprocessing: Mangled-Trie Transitional";
 	_argv[B2_MSG_CONFIG + B2_PREPROC_DIAG_ADDED_PIVOT] = "Preprocessing: Mangled-Trie Pivot";
