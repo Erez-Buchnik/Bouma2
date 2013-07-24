@@ -82,14 +82,24 @@ public:
 		};
 	};
 
-	struct SortPredicate
+	struct KeySortPredicate
+	{
+		bool operator() (typename HashType::const_iterator i, typename HashType::const_iterator j) { return (i->first < j->first); };
+	};
+
+	struct ValueSortPredicate
 	{
 		bool operator() (typename HashType::const_iterator i, typename HashType::const_iterator j) { return (i->second < j->second); };
 	};
 
+	void sort_by_key()
+	{
+		std::sort(this->begin(), this->end(), KeySortPredicate());
+	};
+
 	void sort_by_value()
 	{
-		std::sort(this->begin(), this->end(), SortPredicate());
+		std::sort(this->begin(), this->end(), ValueSortPredicate());
 	};
 };
 

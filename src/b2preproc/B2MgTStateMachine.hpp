@@ -39,8 +39,10 @@ class B2MgTStateMachine : public B2HashMap<unsigned int, B2MgTState>
 	unsigned int _node_count;
 	B2HashMap<unsigned int, B2MgTTerminal> _terminals;
 
+	const std::vector<B2TraceStruct> _traces_vec;
+
 public:
-	B2MgTStateMachine() : _node_count(0) { };
+	B2MgTStateMachine(const std::vector<B2TraceStruct> &traces_vec) : _node_count(0), _traces_vec(traces_vec) { };
 	B2MgTState &new_state(int relative_offset);
 	const B2MgTTerminal &new_terminal(const B2MgTStrInstance &str_instance);
 	const B2HashMap<unsigned int, B2MgTTerminal> &terminals() const { return _terminals; };

@@ -31,6 +31,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #include "B2Hasher.hpp"
 #include "B2MangledTrie.hpp"
 #include <sstream>
+#include <iostream>
 
 typedef struct B2PreprocSMMap : public B2HashMap<B2Trace, B2MgTStateMachine *>
 {
@@ -109,6 +110,7 @@ void b2_preproc_execute(B2Preprocessor *preprocessor)
 	B2TraceCoeffs trace_coeffs;
 	B2Hasher hasher(trace_coeffs, preprocessor->_str_set);
 	const B2MotifSet &motif_set = hasher.motif_set();
+	bool is_verbose = (b2_preproc_config(B2_CFG_DEBUG_VERBOSITY) == "verbose");
 	for(B2MotifSet::const_iterator motif_it = motif_set.begin(); motif_it != motif_set.end(); ++motif_it)
 	{
 		const std::vector<B2TraceStruct> &trace_vec = motif_it->second;
@@ -116,6 +118,26 @@ void b2_preproc_execute(B2Preprocessor *preprocessor)
 		mangled_trie.build();
 		mangled_trie.reshuffle_state_machine();
 		preprocessor->_sm_map[motif_it->first] = mangled_trie.delegate_state_machine();
+		if(is_verbose)
+		{
+			std::cout << "motif#" << (preprocessor->_sm_map.size() - 1) << ":" << std::hex << motif_it->first << std::dec << std::endl;
+		};
 	};
+};
+
+
+const char *b2_preproc_dump_motifs(B2Preprocessor *preprocessor)
+{
+	static std::string dump_buf; // TODO: make thread-safe
+	std::stringstream ss;
+	B2HashSorter<B2PreprocSMMap> sm_sorter(preprocessor->_sm_map);
+	sm_sorter.sort_by_key();
+	for(B2HashSorter<B2PreprocSMMap>::const_iterator sm_it = sm_sorter.begin(); sm_it != sm_sorter.end(); ++sm_it)
+	{
+		const B2MgTStateMachine &sm = *((*sm_it)->second);
+		ss << std::endl << sm.dump() << std::endl;
+	};
+	dump_buf = ss.str();
+	return dump_buf.c_str();
 };
 

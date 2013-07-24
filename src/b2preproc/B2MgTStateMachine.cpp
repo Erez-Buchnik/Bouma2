@@ -73,7 +73,18 @@ std::string B2MgTStateMachine::dump() const
 	{
 		str_out += terminal_it->second.dump() + "\n";
 	};
-	str_strm << str_out << " Longest trans.:" << longest_transition() << std::endl;
+	str_strm << str_out << "--Longest transition:" << longest_transition() << std::endl;
+	{
+		const B2TraceStruct &trace_struct = *(_traces_vec.begin());
+		str_strm << trace_struct.chars().c_str() << ":<" << size() << "," << terminals().size() << ">";
+		str_strm << std::hex << "0x" << trace_struct.trace_val() << std::dec;
+		str_strm << "[" << _traces_vec.size() << "]";
+		for(std::vector<B2TraceStruct>::const_iterator trace_it = _traces_vec.begin(); trace_it != _traces_vec.end(); ++trace_it)
+		{
+			str_strm << "(" << trace_it->offset() << ")" << trace_it->str().c_str() << " ";
+		};
+		str_strm << std::endl;
+	};
 	return str_strm.str();
 };
 

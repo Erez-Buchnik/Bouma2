@@ -45,7 +45,7 @@ void B2MangledTrie::init_single_str_trie(const B2StrSet &str_set, const B2TraceS
 };
 
 B2MangledTrie::B2MangledTrie(const B2StrSet &str_set, const std::vector<B2TraceStruct> &traces_vec) : 
-	_trie_leftmost_offset(0), _trie_rightmost_offset(1), _mgt_state_machine(new B2MgTStateMachine), _delegated_mgt_state_machine(NULL)
+	_trie_leftmost_offset(0), _trie_rightmost_offset(1), _mgt_state_machine(new B2MgTStateMachine(traces_vec)), _delegated_mgt_state_machine(NULL)
 {
 	if(traces_vec.size() > 1)
 	{

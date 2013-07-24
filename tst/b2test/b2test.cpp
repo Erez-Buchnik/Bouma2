@@ -26,67 +26,25 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 ***********************************************************/
 
 #include "B2PreprocApi.h"
-#include "B2Hasher.hpp"
-#include "B2MangledTrie.hpp"
 #include <stdio.h>
 #include <string.h>
 
 void b2_test(const char *strings_file_path)
 {
 	B2Preprocessor *b2_preprocessor = b2_preproc_create();
-	B2StrSet str_set;////
+	char str_bytes[128];
 	FILE *f_strs = fopen(strings_file_path, "r");
 	unsigned int str_count = 0;
-	char str_bytes[128];
 	while(fgets(str_bytes, 128, f_strs) != NULL)
 	{
 		b2_preproc_add_str(b2_preprocessor, str_count, (unsigned char *)str_bytes, (strlen(str_bytes) - 1));
-		B2Str str(str_count, (unsigned char *)str_bytes, (strlen(str_bytes) - 1));////
-		str_set.add_str(str);////
-		//printf("str#%d:%s\n", str_count, std::string(str_bytes, (strlen(str_bytes) - 1)).c_str());
 		++str_count;
 	};
 	fclose(f_strs);
 	printf("%s\n", b2_preproc_dump_strs(b2_preprocessor));
-	B2TraceCoeffs trace_coeffs;
-	B2Hasher hasher(trace_coeffs, str_set);
-	const B2MotifSet &motif_set = hasher.motif_set();
-	/////////////////////////////////////////
-	printf("motif count:%ld\n", motif_set.size());
-	unsigned int mgt_total_state_count = 0;
-	unsigned int mgt_total_terminal_count = 0;
-	for(B2MotifSet::const_iterator motif_it = motif_set.begin(); motif_it != motif_set.end(); ++motif_it)
-	{
-		const std::vector<B2TraceStruct> &trace_vec = motif_it->second;
-		unsigned int mgt_state_count = 0;
-		unsigned int mgt_terminal_count = 0;
-		B2MangledTrie mangled_trie(str_set, trace_vec);
-		mangled_trie.build();
-		mangled_trie.reshuffle_state_machine();
-		if(trace_vec.size() > 1)
-		{
-			mgt_state_count = mangled_trie.state_machine().size();
-			mgt_terminal_count = mangled_trie.state_machine().terminals().size();
-			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
-		}
-		else
-		{
-			mgt_state_count = 0;
-			mgt_terminal_count = 1;
-			printf("\n%s\n", mangled_trie.state_machine().dump().c_str());
-		};
-		const B2TraceStruct &trace_struct = *(trace_vec.begin());
-		printf("%s:<%02d,%02d>%02X[%02ld]", trace_struct.chars().c_str(), mgt_state_count, mgt_terminal_count, motif_it->first, trace_vec.size());
-		for(std::vector<B2TraceStruct>::const_iterator trace_it = trace_vec.begin(); trace_it != trace_vec.end(); ++trace_it)
-		{
-			printf("(%d)%s ", trace_it->offset(), trace_it->str().c_str());
-		};
-		printf("\n");
-		mgt_total_state_count += mgt_state_count;
-		mgt_total_terminal_count += mgt_terminal_count;
-	};
-	printf("TOTALS:<%02d,%02d>\n", mgt_total_state_count, mgt_total_terminal_count);
-	/////////////////////////////////////////
+
+	b2_preproc_execute(b2_preprocessor);
+	printf("%s\n", b2_preproc_dump_motifs(b2_preprocessor));
 };
 
 #include "B2PreprocConfig.hpp"

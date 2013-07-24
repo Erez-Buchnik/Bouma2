@@ -69,7 +69,7 @@ public:
 	B2MgTStateMachine *delegate_state_machine()
 	{
 		_delegated_mgt_state_machine = _mgt_state_machine;
-		_mgt_state_machine = NULL;
+		//_mgt_state_machine = NULL;
 		return _delegated_mgt_state_machine;
 	};
 };

@@ -34,7 +34,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 std::string B2MgTState::dump() const
 {
 	std::stringstream str_strm;
-	str_strm << _relative_offset << '|' << _fallback_transition << ' ' << _id << ':';
+	str_strm << _id << ' ' << _relative_offset << '|' << _fallback_transition << ':';
 	for(const_iterator segment_it = begin(); segment_it != end(); ++segment_it)
 	{
 		str_strm << segment_it->first << ">" << segment_it->second << ' ';

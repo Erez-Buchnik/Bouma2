@@ -35,6 +35,7 @@ enum B2PreprocConfigTxtId
 {
 	B2_CFG_STR_SET_FILE = 1,
 	B2_CFG_GLPK_DEBUG_FILE,
+	B2_CFG_DEBUG_VERBOSITY,
 	///////////////
 	B2_CONFIG_TXT_COUNT
 };

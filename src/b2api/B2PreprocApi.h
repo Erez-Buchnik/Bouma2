@@ -37,6 +37,7 @@ void b2_preproc_destroy(B2Preprocessor *preprocessor);
 void b2_preproc_add_str(B2Preprocessor *preprocessor, unsigned int str_id, unsigned char *str_bytes, unsigned int str_length);
 const char *b2_preproc_dump_strs(B2Preprocessor *preprocessor);
 void b2_preproc_execute(B2Preprocessor *preprocessor);
+const char *b2_preproc_dump_motifs(B2Preprocessor *preprocessor);
 
 #endif //B2PreprocApi___H
 

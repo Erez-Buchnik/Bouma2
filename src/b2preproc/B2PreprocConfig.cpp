@@ -35,6 +35,7 @@ B2PreprocConfig::B2PreprocConfig(const int argc, const char **argv)
 	// Text default config:
 	_argv[B2_CFG_STR_SET_FILE] = "str_set.txt";
 	_argv[B2_CFG_GLPK_DEBUG_FILE] = "B2-ILP.txt";
+	_argv[B2_CFG_DEBUG_VERBOSITY] = "verbose";
 	// Number default config:
 	_argv[B2_CFG_COVERAGE_PURGE_FACTOR] = "0.1";
 	_argv[B2_CFG_DIVERSITY_PURGE_FACTOR] = "0.9";
