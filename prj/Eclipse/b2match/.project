@@ -92,6 +92,11 @@
 			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2match/B2FPMatch.hpp</locationURI>
 		</link>
 		<link>
+			<name>B2MatchDefs.hpp</name>
+			<type>1</type>
+			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2match/B2MatchDefs.hpp</locationURI>
+		</link>
+		<link>
 			<name>B2SP16BitState.hpp</name>
 			<type>1</type>
 			<locationURI>PARENT-2-WORKSPACE_LOC/src/b2match/B2SP16BitState.hpp</locationURI>

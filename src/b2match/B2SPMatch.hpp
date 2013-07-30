@@ -29,6 +29,7 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 #define B2SPMatch___HPP
 
 
+#include "B2MatchDefs.hpp"
 #include "B2SPTerminal.hpp"
 
 
@@ -88,7 +89,7 @@ public:
 		};
 	};
 
-	void* operator new(size_t size, void *ptr) { return ptr; };
+	void *operator new(B2SizeT size, void *ptr) { return ptr; };
 	void operator delete(void *inst, void *ptr) { };
 
 };

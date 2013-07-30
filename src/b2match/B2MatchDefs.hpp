@@ -25,39 +25,20 @@ along with Bouma2; if not, see <http://www.gnu.org/licenses>.
 
 ***********************************************************/
 
-#ifndef B2FP1BitMotifMap___HPP
-#define B2FP1BitMotifMap___HPP
+#ifndef B2MatchDefs___HPP
+#define B2MatchDefs___HPP
 
 
-#define B2FP_1BIT_MOTIF_MAP_SIZE (2048)
+#ifdef __GNUC__
 
-class B2FP1BitMotifMap
-{
-	unsigned int _map[B2FP_1BIT_MOTIF_MAP_SIZE];
+typedef long unsigned int B2SizeT;
 
-	B2FP1BitMotifMap()
-	{
-		for(unsigned int i = 0; i < B2FP_1BIT_MOTIF_MAP_SIZE; ++i)
-		{
-			_map[i] = 0;
-		};
-	};
+#else
 
-	void add_motif(unsigned short motif)
-	{
-		unsigned int div = motif / 32;
-		unsigned int mod = motif % 32;
-		_map[div] |= (1 << mod);
-	};
+typedef size_t B2SizeT;
 
-	unsigned int match(unsigned short motif) const
-	{
-		unsigned int div = motif / 32;
-		unsigned int mod = motif % 32;
-		return ((_map[div] >> mod) & 1);
-	};
-};
+#endif
 
 
-#endif //B2FP1BitMotifMap___HPP
+#endif // B2MatchDefs___HPP
 
